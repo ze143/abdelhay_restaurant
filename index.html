@@ -15,6 +15,8 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -76,6 +78,9 @@
               <li class="nav-item item">
                 <a class="nav-link" href="#who">احنا مين؟</a>
               </li>
+              <li class="nav-item item">
+                <a class="nav-link" href="./ratings.html">التقييمات</a>
+              </li>
               <li class="nav-item dropdown">
                 <a
                   class="nav-link dropdown-toggle item"
@@ -88,10 +93,14 @@
                 </a>
                 <ul class="dropdown-menu">
                   <li>
-                    <a class="dropdown-item item" href="./menu.html#chicken">قسم الدجاج</a>
+                    <a class="dropdown-item item" href="./menu.html#chicken"
+                      >قسم الدجاج</a
+                    >
                   </li>
                   <li>
-                    <a class="dropdown-item item" href="./menu.html#bbq">قسم المشويات</a>
+                    <a class="dropdown-item item" href="./menu.html#bbq"
+                      >قسم المشويات</a
+                    >
                   </li>
                   <li>
                     <a class="dropdown-item item" href="./menu.html#sandwiches"
@@ -104,16 +113,24 @@
                     >
                   </li>
                   <li>
-                    <a class="dropdown-item item" href="./menu.html#meals">قسم الوجبات</a>
+                    <a class="dropdown-item item" href="./menu.html#meals"
+                      >قسم الوجبات</a
+                    >
                   </li>
                   <li>
-                    <a class="dropdown-item item" href="./menu.html#plates">قسم الصواني</a>
+                    <a class="dropdown-item item" href="./menu.html#plates"
+                      >قسم الصواني</a
+                    >
                   </li>
                   <li>
-                    <a class="dropdown-item item" href="./menu.html#twagen">قسم الطواجن</a>
+                    <a class="dropdown-item item" href="./menu.html#twagen"
+                      >قسم الطواجن</a
+                    >
                   </li>
                   <li>
-                    <a class="dropdown-item item" href="./menu.html#kitchen">قسم المطبخ</a>
+                    <a class="dropdown-item item" href="./menu.html#kitchen"
+                      >قسم المطبخ</a
+                    >
                   </li>
                   <li>
                     <a class="dropdown-item item" href="./menu.html#salads"
@@ -153,11 +170,47 @@
               من سنة 1979 والحكاية بدأت يومها كان اسمنا الأمانة، ومع السنين
               اتغير الاسم، لكن عمر الطعم ولا الجودة ما اتغيروا. <br />النهارده
               عبدالحي الكبابجي بقى اسم له تاريخ، وثقة بناها جيل ورا جيل، لحد ما
-              بقينا من العلامات المميزة في المنطقة. <br /> وسعنا المكان، وكبرنا عشان
+              بقينا من العلامات المميزة في المنطقة. وسعنا المكان، وكبرنا عشان
               نستقبلكم بأفضل خدمة، لكن فضلنا محافظين على نفس الوصفة، ونفس
               الجودة، ونفس الطعم اللي الناس بتحبه من أكتر من 45 سنة.
+
               <br />عبدالحي الكبابجي حكاية بدأت من زمان، ولسه مستمرة معاكم في كل
               لقمة. ❤️🔥
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section Ratings -->
+    <div class="section-ratings">
+      <div class="container">
+        <div class="row">
+          <div class="content col-12">
+            <div class="label-head">
+              <h3>⭐ رأيك يهمنا</h3>
+              <p class="sub-text">ساعدنا نكون أفضل بكل صراحة وشفافية ❤️</p>
+            </div>
+
+            <div class="ratings-box">
+              <div class="ratings-content">
+                <i class="fas fa-star star-icon"></i>
+                <h4>قيّم تجربتك معانا</h4>
+                <p>شاركنا رأيك في الخدمة، الأكل، والأجواء</p>
+                <div class="rating-stats">
+                  <div class="stat-item">
+                    <span class="stat-number" id="homeAvgRating">0</span>
+                    <span class="stat-label">متوسط التقييم</span>
+                  </div>
+                  <div class="stat-item">
+                    <span class="stat-number" id="homeTotalRatings">0</span>
+                    <span class="stat-label">تقييم</span>
+                  </div>
+                </div>
+                <a href="./ratings.html" class="btn-ratings">
+                  <i class="fas fa-pen"></i> قيم تجربتك
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -531,10 +584,77 @@
         ALL RIGHTS RESERVED ©<br />
         : Designed by<br /><strong>Ziad Abdelkader</strong>
       </p>
+      <a href="admin.html" class="text-warning text-decoration-none">
+        <i class="fas fa-crown"></i> لوحة الإدارة
+      </a>
     </footer>
   </body>
   <script src="./js/bootstrap.bundle.min.js"></script>
   <script>
+    <!-- ===== Scripts ===== -->
+
+    // ===== Supabase Config =====
+    const supabaseUrl = "https://rmruhmstxzeeoqthrneg.supabase.co";
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJtcnVobXN0eHplZW9xdGhybmVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3NDgzNDYsImV4cCI6MjA5MzMyNDM0Nn0.WCMyEXEJwj-4TvqJi_UDN5w2uxrAf-ZYljWQthgR4Hg";
+    const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+    // ===== جلب إحصائيات التقييمات للصفحة الرئيسية =====
+    async function loadHomeStats() {
+        try {
+            const { data: analytics, error } = await supabaseClient
+                .from("rating_analytics")
+                .select("avg_rating, total_ratings")
+                .maybeSingle();
+
+            if (error) {
+                console.error("Error loading home stats:", error);
+                return;
+            }
+
+            if (analytics) {
+                const avgRating = analytics.avg_rating ? analytics.avg_rating.toFixed(1) : "0";
+                const avgElement = document.getElementById("homeAvgRating");
+                const totalElement = document.getElementById("homeTotalRatings");
+                
+                if (avgElement) avgElement.textContent = avgRating;
+                if (totalElement) totalElement.textContent = analytics.total_ratings || 0;
+            }
+        } catch (e) {
+            console.error("Error in loadHomeStats:", e);
+        }
+    }
+
+    // ===== تحميل الصفحة =====
+    document.addEventListener("DOMContentLoaded", function() {
+        // كود الأوف كانفس الموجود
+        var offcanvasEl = document.getElementById("offcanvasNavbar");
+        var links = document.querySelectorAll(
+            "#offcanvasNavbar .nav-link, #offcanvasNavbar .dropdown-item",
+        );
+
+        links.forEach(function(link) {
+            link.addEventListener("click", function(e) {
+                var href = this.getAttribute("href");
+                if (href && href.startsWith("#")) {
+                    e.preventDefault();
+                    var offcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl);
+                    if (offcanvas) {
+                        offcanvas.hide();
+                    }
+                    setTimeout(function() {
+                        var target = document.querySelector(href);
+                        if (target) {
+                            target.scrollIntoView({ behavior: "smooth" });
+                        }
+                    }, 350);
+                }
+            });
+        });
+
+        // ===== جلب إحصائيات التقييمات =====
+        loadHomeStats();
+    });
+
     document.addEventListener("DOMContentLoaded", function () {
       var offcanvasEl = document.getElementById("offcanvasNavbar");
       var links = document.querySelectorAll(
