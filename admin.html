@@ -1,0 +1,3653 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>لوحة التحكم - عبدالحي الكبابجي</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* ============================================================
+         ألوان محسنة
+      ============================================================ */
+
+      :root {
+        --primary: #6b1a1a;
+        --primary-light: #8b2a2a;
+        --secondary: #d4a574;
+        --gold: #c9a84c;
+        --gold-light: #e8d5a3;
+        --dark: #1a1410;
+        --dark-card: #2a1f18;
+        --dark-hover: #3d2c20;
+        --text-light: #f5ede6;
+        --text-muted: #b8a99a;
+        --border-gold: rgba(201, 168, 76, 0.2);
+        --shadow-gold: rgba(201, 168, 76, 0.15);
+      }
+
+      body {
+        font-family: "Estedad", "Aref Ruqaa", sans-serif;
+        background: var(--dark);
+        color: var(--text-light);
+        min-height: 100vh;
+      }
+      /* ============================================================
+         Login
+      ============================================================ */
+
+      .login-container {
+        max-width: 420px;
+        margin: 80px auto;
+        background: linear-gradient(145deg, #2a1f18, #1a1410);
+        backdrop-filter: blur(20px);
+        border-radius: 24px;
+        padding: 45px 35px;
+        border: 1px solid var(--border-gold);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+      }
+
+      .login-container .logo {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .login-container .logo img {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid var(--gold);
+        box-shadow: 0 0 30px rgba(201, 168, 76, 0.2);
+      }
+
+      .login-container .logo h2 {
+        color: var(--gold);
+        margin-top: 12px;
+        font-weight: 700;
+      }
+
+      .login-container .logo p {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+      }
+      /* ============================================================
+         Dashboard Container
+      ============================================================ */
+
+      .dashboard-container {
+        display: none;
+        padding: 20px;
+      }
+      /* ============================================================
+         Sidebar
+      ============================================================ */
+
+      .sidebar {
+        position: fixed;
+        right: 0;
+        top: 0;
+        height: 100vh;
+        width: 260px;
+        background: linear-gradient(180deg, #1a1410, #0d0a08);
+        border-left: 1px solid var(--border-gold);
+        padding: 20px 15px;
+        overflow-y: auto;
+        z-index: 1000;
+        box-shadow: 4px 0 30px rgba(0, 0, 0, 0.4);
+      }
+
+      .sidebar::-webkit-scrollbar {
+        width: 4px;
+      }
+
+      .sidebar::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .sidebar::-webkit-scrollbar-thumb {
+        background: var(--gold);
+        border-radius: 10px;
+      }
+
+      .sidebar .brand {
+        text-align: center;
+        padding: 20px 0 25px;
+        border-bottom: 1px solid var(--border-gold);
+        margin-bottom: 20px;
+      }
+
+      .sidebar .brand img {
+        width: 65px;
+        height: 65px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid var(--gold);
+        box-shadow: 0 0 20px rgba(201, 168, 76, 0.15);
+      }
+
+      .sidebar .brand h4 {
+        color: var(--gold);
+        margin-top: 10px;
+        font-size: 1rem;
+        font-weight: 700;
+      }
+
+      .sidebar .brand small {
+        color: var(--text-muted);
+        font-size: 0.8rem;
+      }
+
+      .sidebar .nav-link {
+        color: var(--text-muted);
+        padding: 12px 18px;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        margin-bottom: 4px;
+        font-weight: 500;
+        border: 1px solid transparent;
+      }
+
+      .sidebar .nav-link:hover {
+        background: rgba(201, 168, 76, 0.08);
+        color: var(--gold-light);
+        border-color: var(--border-gold);
+      }
+
+      .sidebar .nav-link.active {
+        background: linear-gradient(
+          135deg,
+          rgba(201, 168, 76, 0.15),
+          rgba(201, 168, 76, 0.05)
+        );
+        color: var(--gold);
+        border-color: var(--border-gold);
+        box-shadow: inset 0 0 20px rgba(201, 168, 76, 0.05);
+      }
+
+      .sidebar .nav-link i {
+        margin-left: 12px;
+        width: 22px;
+        text-align: center;
+      }
+
+      .sidebar .logout-btn {
+        border-top: 1px solid var(--border-gold);
+        padding-top: 15px;
+        margin-top: 15px;
+        color: #b85a4a;
+      }
+
+      .sidebar .logout-btn:hover {
+        color: #ff6b5a;
+        background: rgba(184, 90, 74, 0.1);
+        border-color: rgba(184, 90, 74, 0.2);
+      }
+      /* ============================================================
+         Main Content
+      ============================================================ */
+
+      .main-content {
+        margin-right: 260px;
+        padding: 20px 30px;
+      }
+      /* ============================================================
+         Stats Cards
+      ============================================================ */
+
+      .stat-card {
+        background: linear-gradient(145deg, #2a1f18, #1f1610);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        padding: 22px 20px;
+        border: 1px solid var(--border-gold);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .stat-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 4px;
+        height: 100%;
+        background: var(--gold);
+        opacity: 0.5;
+      }
+
+      .stat-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(201, 168, 76, 0.4);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+      }
+
+      .stat-card .icon {
+        font-size: 1.6rem;
+        color: var(--gold);
+        opacity: 0.8;
+      }
+
+      .stat-card .number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text-light);
+        margin-top: 4px;
+      }
+
+      .stat-card .label {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+      }
+
+      .stat-card .sub-label {
+        color: #6a5d52;
+        font-size: 0.7rem;
+      }
+      /* ============================================================
+         Service Stats
+      ============================================================ */
+
+      .service-stat {
+        background: linear-gradient(145deg, #2a1f18, #1f1610);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        padding: 18px 20px;
+        border: 1px solid var(--border-gold);
+        text-align: center;
+        transition: all 0.3s ease;
+      }
+
+      .service-stat:hover {
+        transform: translateY(-3px);
+        border-color: rgba(201, 168, 76, 0.3);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      .service-stat .icon {
+        font-size: 1.8rem;
+        margin-bottom: 4px;
+      }
+
+      .service-stat .number {
+        font-size: 1.6rem;
+        font-weight: 700;
+      }
+
+      .service-stat .label {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+      }
+
+      .service-stat .sub-label {
+        color: #6a5d52;
+        font-size: 0.75rem;
+      }
+
+      .service-stat.takeaway .icon {
+        color: #6ab0e6;
+      }
+
+      .service-stat.takeaway .number {
+        color: #6ab0e6;
+      }
+
+      .service-stat.dinein .icon {
+        color: #6bd68d;
+      }
+
+      .service-stat.dinein .number {
+        color: #6bd68d;
+      }
+
+      .service-stat.delivery .icon {
+        color: #f4d03f;
+      }
+
+      .service-stat.delivery .number {
+        color: #f4d03f;
+      }
+      /* ============================================================
+         Table (عام)
+      ============================================================ */
+
+      .table-container {
+        background: linear-gradient(145deg, #2a1f18, #1f1610);
+        border-radius: 16px;
+        padding: 22px;
+        border: 1px solid var(--border-gold);
+        margin-top: 20px;
+      }
+
+      .table-container .table {
+        color: var(--text-light);
+        margin-bottom: 0;
+      }
+
+      .table-container .table th {
+        border-bottom: 2px solid var(--border-gold);
+        color: var(--gold);
+        font-weight: 600;
+        padding: 12px 10px;
+        font-size: 0.9rem;
+      }
+
+      .table-container .table td {
+        vertical-align: middle;
+        border-color: rgba(255, 255, 255, 0.04);
+        padding: 12px 10px;
+      }
+
+      .table-container .table tr:hover td {
+        background: rgba(201, 168, 76, 0.03);
+      }
+      /* ============================================================
+         Badges (عام)
+      ============================================================ */
+
+      .status-badge {
+        padding: 5px 16px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        display: inline-block;
+      }
+
+      .status-pending {
+        background: rgba(241, 196, 15, 0.15);
+        color: #f4d03f;
+        border: 1px solid rgba(241, 196, 15, 0.2);
+      }
+
+      .status-approved {
+        background: rgba(46, 204, 113, 0.15);
+        color: #58d68d;
+        border: 1px solid rgba(46, 204, 113, 0.2);
+      }
+
+      .status-rejected {
+        background: rgba(231, 76, 60, 0.15);
+        color: #ec7063;
+        border: 1px solid rgba(231, 76, 60, 0.2);
+      }
+
+      .status-responded {
+        background: rgba(52, 152, 219, 0.15);
+        color: #5dade2;
+        border: 1px solid rgba(52, 152, 219, 0.2);
+      }
+
+      .service-badge {
+        padding: 3px 12px;
+        border-radius: 12px;
+        font-size: 0.7rem;
+        font-weight: 600;
+      }
+
+      .service-takeaway {
+        background: rgba(93, 173, 226, 0.15);
+        color: #5dade2;
+        border: 1px solid rgba(93, 173, 226, 0.15);
+      }
+
+      .service-dinein {
+        background: rgba(88, 214, 141, 0.15);
+        color: #58d68d;
+        border: 1px solid rgba(88, 214, 141, 0.15);
+      }
+
+      .service-delivery {
+        background: rgba(244, 208, 63, 0.15);
+        color: #f4d03f;
+        border: 1px solid rgba(244, 208, 63, 0.15);
+      }
+      /* ============================================================
+         Buttons & Inputs (عام)
+      ============================================================ */
+
+      .btn-gold {
+        background: linear-gradient(135deg, var(--gold), #b8942e);
+        color: #1a1410;
+        font-weight: 700;
+        border: none;
+        padding: 8px 22px;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+      }
+
+      .btn-gold:hover {
+        transform: scale(1.04);
+        box-shadow: 0 5px 25px rgba(201, 168, 76, 0.3);
+        color: #1a1410;
+      }
+
+      .btn-submit {
+        background: linear-gradient(135deg, var(--gold), #b8942e);
+        color: #1a1410;
+        font-weight: 700;
+        padding: 12px;
+        border: none;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+      }
+
+      .btn-submit:hover {
+        transform: scale(1.02);
+        box-shadow: 0 5px 25px rgba(201, 168, 76, 0.3);
+        color: #1a1410;
+      }
+
+      .form-control {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: var(--text-light);
+        border-radius: 10px;
+        padding: 10px 16px;
+        transition: all 0.3s ease;
+      }
+
+      .form-control:focus {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: var(--gold);
+        color: var(--text-light);
+        box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.1);
+      }
+
+      .form-control::placeholder {
+        color: #5a4d42;
+      }
+
+      .form-select {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: var(--text-light);
+        border-radius: 10px;
+        padding: 8px 15px;
+      }
+
+      .form-select:focus {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: var(--gold);
+        color: var(--text-light);
+        box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.1);
+      }
+
+      .form-select option {
+        background: #1a1410;
+        color: var(--text-light);
+      }
+
+      .response-textarea {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: var(--text-light);
+        border-radius: 10px;
+        padding: 12px;
+        width: 100%;
+        resize: vertical;
+        transition: all 0.3s ease;
+      }
+
+      .response-textarea:focus {
+        background: rgba(255, 255, 255, 0.07);
+        border-color: var(--gold);
+        color: var(--text-light);
+        box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.1);
+      }
+      /* ============================================================
+         Chart Container
+      ============================================================ */
+
+      .chart-container {
+        background: linear-gradient(145deg, #2a1f18, #1f1610);
+        border-radius: 16px;
+        padding: 20px;
+        border: 1px solid var(--border-gold);
+        height: 300px;
+        position: relative;
+      }
+      /* ============================================================
+         Filter Bar (عام)
+      ============================================================ */
+
+      .filter-bar {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+        align-items: center;
+      }
+
+      .filter-bar .form-select,
+      .filter-bar .form-control {
+        width: auto;
+        min-width: 150px;
+      }
+      /* ============================================================
+         Modal
+      ============================================================ */
+
+      .modal-content {
+        background: linear-gradient(145deg, #2a1f18, #1a1410);
+        border: 1px solid var(--border-gold);
+        border-radius: 20px;
+        color: var(--text-light);
+      }
+
+      .modal-header {
+        border-bottom: 1px solid var(--border-gold);
+      }
+
+      .modal-footer {
+        border-top: 1px solid var(--border-gold);
+      }
+
+      .btn-close {
+        filter: invert(1) brightness(0.7);
+      }
+      /* ============================================================
+         Dropdown (عام)
+      ============================================================ */
+
+      .dropdown-menu {
+        background: #1a1410;
+        border: 1px solid var(--border-gold);
+        border-radius: 12px;
+        padding: 6px;
+      }
+
+      .dropdown-item {
+        color: var(--text-muted);
+        border-radius: 8px;
+        padding: 8px 16px;
+        transition: all 0.2s ease;
+      }
+
+      .dropdown-item:hover {
+        background: rgba(201, 168, 76, 0.08);
+        color: var(--gold-light);
+      }
+
+      .dropdown-item.text-danger:hover {
+        background: rgba(184, 90, 74, 0.1);
+        color: #ff6b5a;
+      }
+      /* ============================================================
+         تنسيق صفحة إدارة التقييمات (المحسّن)
+      ============================================================ */
+      /* ---- عنوان الصفحة ---- */
+
+      #section-ratings > h2 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      #section-ratings > h2 i {
+        color: var(--gold);
+      }
+      /* ---- شريط الفلتر المحسن ---- */
+
+      #section-ratings .filter-bar {
+        background: rgba(255, 255, 255, 0.03);
+        padding: 18px 22px;
+        border-radius: 16px;
+        border: 1px solid var(--border-gold);
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
+        margin-bottom: 25px;
+      }
+
+      #section-ratings .filter-bar .form-select,
+      #section-ratings .filter-bar .form-control {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: var(--text-light);
+        border-radius: 10px;
+        padding: 10px 16px;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        min-width: 160px;
+        height: 44px;
+      }
+
+      #section-ratings .filter-bar .form-select:focus,
+      #section-ratings .filter-bar .form-control:focus {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: var(--gold);
+        box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.12);
+        color: var(--text-light);
+      }
+
+      #section-ratings .filter-bar .form-select option {
+        background: #1a1410;
+        color: var(--text-light);
+        padding: 8px;
+      }
+
+      #section-ratings .filter-bar .form-control::placeholder {
+        color: #5a4d42;
+      }
+
+      #section-ratings .filter-bar .btn-gold {
+        background: linear-gradient(135deg, var(--gold), #b8942e);
+        color: #1a1410;
+        font-weight: 700;
+        border: none;
+        padding: 10px 24px;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.9rem;
+      }
+
+      #section-ratings .filter-bar .btn-gold:hover {
+        transform: scale(1.04);
+        box-shadow: 0 5px 25px rgba(201, 168, 76, 0.3);
+        color: #1a1410;
+      }
+      /* ---- حاوية الجدول ---- */
+
+      #section-ratings .table-container {
+        background: linear-gradient(145deg, #2a1f18, #1f1610);
+        border-radius: 16px;
+        padding: 0;
+        border: 1px solid var(--border-gold);
+        overflow: hidden;
+        margin-top: 0;
+      }
+
+      #section-ratings .table-container .table-responsive {
+        padding: 0;
+        overflow-x: auto;
+      }
+      /* ---- الجدول نفسه ---- */
+
+      #section-ratings .table {
+        color: var(--text-light);
+        margin-bottom: 0;
+        font-size: 0.9rem;
+        border-collapse: separate;
+        border-spacing: 0;
+        width: 100%;
+      }
+
+      #section-ratings .table thead {
+        background: rgba(201, 168, 76, 0.06);
+      }
+
+      #section-ratings .table thead th {
+        color: var(--gold);
+        font-weight: 700;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 16px 14px;
+        border-bottom: 2px solid var(--border-gold);
+        white-space: nowrap;
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        background-color: #1a1410;
+      }
+
+      #section-ratings .table tbody tr {
+        transition: all 0.2s ease;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        background-color: #1a1410;
+      }
+
+      #section-ratings .table tbody tr:last-child {
+        border-bottom: none;
+      }
+
+      #section-ratings .table tbody tr:hover {
+        background: rgba(201, 168, 76, 0.05);
+      }
+
+      #section-ratings .table tbody td {
+        padding: 14px 14px;
+        vertical-align: middle;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        background-color: #1a1410;
+        color: white;
+      }
+      /* ---- عمود العميل ---- */
+
+      #section-ratings .customer-cell {
+        display: flex;
+        flex-direction: column;
+      }
+
+      #section-ratings .customer-cell .name {
+        font-weight: 700;
+        color: var(--text-light);
+        font-size: 0.95rem;
+      }
+
+      #section-ratings .customer-cell .phone {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        margin-top: 2px;
+      }
+      /* ---- عمود التقييم (النجوم) ---- */
+
+      #section-ratings .stars-cell {
+        color: var(--gold);
+        font-size: 1rem;
+        letter-spacing: 2px;
+        direction: ltr;
+        display: inline-block;
+        font-weight: 700;
+      }
+      /* ---- عمود التعليق ---- */
+
+      #section-ratings .comment-cell {
+        max-width: 180px;
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
+      }
+      /* ---- بادج الحالة المحسنة ---- */
+
+      #section-ratings .status-badge {
+        padding: 5px 14px;
+        border-radius: 20px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid transparent;
+      }
+
+      #section-ratings .status-badge::before {
+        content: "";
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+      }
+
+      #section-ratings .status-pending {
+        background: rgba(241, 196, 15, 0.12);
+        color: #f4d03f;
+        border-color: rgba(241, 196, 15, 0.2);
+      }
+
+      #section-ratings .status-pending::before {
+        background: #f4d03f;
+      }
+
+      #section-ratings .status-approved {
+        background: rgba(46, 204, 113, 0.12);
+        color: #58d68d;
+        border-color: rgba(46, 204, 113, 0.2);
+      }
+
+      #section-ratings .status-approved::before {
+        background: #58d68d;
+      }
+
+      #section-ratings .status-rejected {
+        background: rgba(231, 76, 60, 0.12);
+        color: #ec7063;
+        border-color: rgba(231, 76, 60, 0.2);
+      }
+
+      #section-ratings .status-rejected::before {
+        background: #ec7063;
+      }
+
+      #section-ratings .status-responded {
+        background: rgba(52, 152, 219, 0.12);
+        color: #5dade2;
+        border-color: rgba(52, 152, 219, 0.2);
+      }
+
+      #section-ratings .status-responded::before {
+        background: #5dade2;
+      }
+      /* ---- بادج الخدمة المحسنة ---- */
+
+      #section-ratings .service-badge {
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 0.65rem;
+        font-weight: 700;
+        display: inline-block;
+        border: 1px solid transparent;
+      }
+
+      #section-ratings .service-takeaway {
+        background: rgba(93, 173, 226, 0.12);
+        color: #5dade2;
+        border-color: rgba(93, 173, 226, 0.15);
+      }
+
+      #section-ratings .service-dinein {
+        background: rgba(88, 214, 141, 0.12);
+        color: #58d68d;
+        border-color: rgba(88, 214, 141, 0.15);
+      }
+
+      #section-ratings .service-delivery {
+        background: rgba(244, 208, 63, 0.12);
+        color: #f4d03f;
+        border-color: rgba(244, 208, 63, 0.15);
+      }
+      /* ---- عمود الإجراءات (الأزرار) ---- */
+
+      #section-ratings .actions-cell {
+        text-align: center;
+      }
+
+      #section-ratings .actions-cell .dropdown-toggle {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: var(--text-muted);
+        border-radius: 8px;
+        padding: 6px 14px;
+        font-size: 0.85rem;
+        transition: all 0.3s ease;
+      }
+
+      #section-ratings .actions-cell .dropdown-toggle:hover {
+        background: rgba(201, 168, 76, 0.1);
+        border-color: var(--border-gold);
+        color: var(--gold);
+      }
+
+      #section-ratings .actions-cell .dropdown-toggle::after {
+        display: none;
+      }
+
+      #section-ratings .actions-cell .dropdown-menu {
+        background: #1a1410;
+        border: 1px solid var(--border-gold);
+        border-radius: 12px;
+        padding: 6px;
+        min-width: 160px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+      }
+
+      #section-ratings .actions-cell .dropdown-item {
+        color: var(--text-muted);
+        border-radius: 8px;
+        padding: 8px 16px;
+        font-size: 0.85rem;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      #section-ratings .actions-cell .dropdown-item:hover {
+        background: rgba(201, 168, 76, 0.08);
+        color: var(--gold-light);
+      }
+
+      #section-ratings .actions-cell .dropdown-item i {
+        width: 18px;
+        text-align: center;
+        font-size: 0.9rem;
+      }
+
+      #section-ratings .actions-cell .dropdown-item.text-danger:hover {
+        background: rgba(184, 90, 74, 0.1);
+        color: #ff6b5a;
+      }
+      /* ---- الرد المختصر في الجدول ---- */
+
+      #section-ratings .response-preview {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        margin-top: 4px;
+        max-width: 120px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+     /* ---- الترقيم (Pagination) ---- */
+#pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 22px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 0 0 16px 16px;
+}
+
+#pagination .page-info {
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+#pagination .btn-outline-secondary {
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 8px 18px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+#pagination .btn-outline-secondary:hover:not(:disabled) {
+    background: rgba(201, 168, 76, 0.15);
+    border-color: var(--gold);
+    color: var(--gold);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(201, 168, 76, 0.1);
+}
+
+#pagination .btn-outline-secondary:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+#pagination .btn-outline-secondary i {
+    color: #b8a99a ;
+    font-size: 0.75rem;
+    transition: color 0.3s ease;
+}
+
+#pagination .btn-outline-secondary:hover:not(:disabled) i {
+    color: var(--gold);
+}
+
+#pagination .btn-outline-secondary:disabled i {
+    color: #4a3f38;
+}
+      /* ============================================================
+         Responsive - صفحة التقييمات
+      ============================================================ */
+      /* تابلت */
+
+      @media (max-width: 992px) {
+        #section-ratings .table thead th,
+        #section-ratings .table tbody td {
+          padding: 10px 10px;
+          font-size: 0.8rem;
+        }
+        #section-ratings .comment-cell {
+          max-width: 100px;
+        }
+        #section-ratings .filter-bar {
+          padding: 14px 16px;
+          gap: 10px;
+        }
+        #section-ratings .filter-bar .form-select,
+        #section-ratings .filter-bar .form-control {
+          min-width: 130px;
+          padding: 8px 12px;
+          font-size: 0.85rem;
+        }
+      }
+      /* موبايل */
+
+      @media (max-width: 768px) {
+        .sidebar {
+          width: 100%;
+          height: auto;
+          position: relative;
+          border-left: none;
+          border-bottom: 1px solid var(--border-gold);
+        }
+        .main-content {
+          margin-right: 0;
+          padding: 15px;
+        }
+        .stat-card .number {
+          font-size: 1.4rem;
+        }
+        .login-container {
+          margin: 30px 15px;
+          padding: 30px 20px;
+        }
+        #section-ratings .filter-bar {
+          padding: 12px 14px;
+          flex-direction: column;
+          gap: 10px;
+        }
+        #section-ratings .filter-bar .form-select,
+        #section-ratings .filter-bar .form-control,
+        #section-ratings .filter-bar .btn-gold {
+          width: 100%;
+          min-width: unset;
+        }
+        #section-ratings .filter-bar .btn-gold {
+          justify-content: center;
+        }
+        #section-ratings .table thead th:nth-child(4),
+        #section-ratings .table tbody td:nth-child(4) {
+          display: none;
+        }
+        #section-ratings .table thead th:nth-child(5),
+        #section-ratings .table tbody td:nth-child(5) {
+          display: none;
+        }
+        #section-ratings .table thead th,
+        #section-ratings .table tbody td {
+          padding: 8px 8px;
+          font-size: 0.75rem;
+        }
+        #section-ratings .customer-cell .name {
+          font-size: 0.85rem;
+        }
+        #section-ratings .stars-cell {
+          font-size: 0.8rem;
+          letter-spacing: 1px;
+        }
+        #section-ratings .actions-cell .dropdown-toggle {
+          padding: 4px 10px;
+          font-size: 0.75rem;
+        }
+        #pagination {
+          flex-direction: column;
+          gap: 12px;
+          padding: 14px 16px;
+        }
+        #pagination .btn-outline-secondary {
+          padding: 6px 14px;
+          font-size: 0.8rem;
+        }
+        #section-ratings > h2 {
+          font-size: 1.4rem;
+        }
+      }
+      /* موبايل صغير */
+
+      @media (max-width: 576px) {
+        .stat-card {
+          padding: 15px;
+        }
+        .table-container {
+          padding: 12px;
+        }
+        .table-container .table th,
+        .table-container .table td {
+          padding: 8px 6px;
+          font-size: 0.8rem;
+        }
+        .service-stat .number {
+          font-size: 1.2rem;
+        }
+        #section-ratings .table thead th:nth-child(3),
+        #section-ratings .table tbody td:nth-child(3) {
+          display: none;
+        }
+        #section-ratings .table thead th:nth-child(7),
+        #section-ratings .table tbody td:nth-child(7) {
+          padding: 6px 4px;
+        }
+        #section-ratings .table-container {
+          padding: 0;
+          border-radius: 12px;
+        }
+        #section-ratings .table thead th {
+          padding: 10px 6px;
+          font-size: 0.65rem;
+        }
+        #section-ratings .table tbody td {
+          padding: 8px 6px;
+          font-size: 0.7rem;
+        }
+        #section-ratings .status-badge {
+          padding: 3px 10px;
+          font-size: 0.6rem;
+        }
+        #section-ratings .service-badge {
+          padding: 2px 8px;
+          font-size: 0.55rem;
+        }
+        #section-ratings .customer-cell .phone {
+          font-size: 0.6rem;
+        }
+      }
+      /* ============================================================
+         تحسين التمرير الأفقي للجدول
+      ============================================================ */
+
+      .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .table-responsive::-webkit-scrollbar {
+        height: 5px;
+      }
+
+      .table-responsive::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .table-responsive::-webkit-scrollbar-thumb {
+        background: var(--gold);
+        border-radius: 10px;
+      }
+      /* ============================================================
+         رسالة "لا توجد تقييمات"
+      ============================================================ */
+
+      #section-ratings .empty-state {
+        padding: 40px 20px;
+        text-align: center;
+        color: var(--text-muted);
+      }
+
+      #section-ratings .empty-state i {
+        font-size: 3rem;
+        color: var(--border-gold);
+        margin-bottom: 15px;
+        display: block;
+      }
+
+      #section-ratings .empty-state p {
+        font-size: 1rem;
+      }
+      /* ============================================================
+   تنسيق صفحة إدارة التقييمات (المحسّن)
+   ============================================================ */
+      /* ---- عنوان الصفحة ---- */
+
+      #section-ratings > h2 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--text-light);
+      }
+
+      #section-ratings > h2 i {
+        color: var(--gold);
+      }
+      /* ---- شريط الفلتر المحسن ---- */
+
+      #section-ratings .filter-bar {
+        background: rgba(255, 255, 255, 0.03);
+        padding: 18px 22px;
+        border-radius: 16px;
+        border: 1px solid var(--border-gold);
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
+        margin-bottom: 25px;
+      }
+
+      #section-ratings .filter-bar .form-select,
+      #section-ratings .filter-bar .form-control {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: var(--text-light);
+        border-radius: 10px;
+        padding: 10px 16px;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        min-width: 160px;
+        height: 44px;
+      }
+
+      #section-ratings .filter-bar .form-select:focus,
+      #section-ratings .filter-bar .form-control:focus {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: var(--gold);
+        box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.12);
+        color: var(--text-light);
+      }
+
+      #section-ratings .filter-bar .form-select option {
+        background: #1a1410;
+        color: var(--text-light);
+        padding: 8px;
+      }
+
+      #section-ratings .filter-bar .form-control::placeholder {
+        color: #5a4d42;
+      }
+
+      #section-ratings .filter-bar .btn-gold {
+        background: linear-gradient(135deg, var(--gold), #b8942e);
+        color: #1a1410;
+        font-weight: 700;
+        border: none;
+        padding: 10px 24px;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.9rem;
+      }
+
+      #section-ratings .filter-bar .btn-gold:hover {
+        transform: scale(1.04);
+        box-shadow: 0 5px 25px rgba(201, 168, 76, 0.3);
+        color: #1a1410;
+      }
+      /* ---- حاوية الجدول ---- */
+
+      #section-ratings .table-container {
+        background: linear-gradient(145deg, #2a1f18, #1f1610);
+        border-radius: 16px;
+        padding: 0;
+        border: 1px solid var(--border-gold);
+        overflow: hidden;
+        margin-top: 0;
+      }
+
+      #section-ratings .table-container .table-responsive {
+        padding: 0;
+        overflow-x: auto;
+      }
+      /* ---- الجدول نفسه ---- */
+
+      #section-ratings .table {
+        color: var(--text-light);
+        margin-bottom: 0;
+        font-size: 0.9rem;
+        border-collapse: separate;
+        border-spacing: 0;
+        width: 100%;
+      }
+
+      #section-ratings .table thead {
+        background: rgba(201, 168, 76, 0.06);
+      }
+
+      #section-ratings .table thead th {
+        color: var(--gold);
+        font-weight: 700;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 16px 14px;
+        border-bottom: 2px solid var(--border-gold);
+        white-space: nowrap;
+        position: sticky;
+        top: 0;
+        z-index: 5;
+      }
+
+      #section-ratings .table tbody tr {
+        transition: all 0.2s ease;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      }
+
+      #section-ratings .table tbody tr:last-child {
+        border-bottom: none;
+      }
+
+      #section-ratings .table tbody tr:hover {
+        background: rgba(201, 168, 76, 0.05);
+      }
+
+      #section-ratings .table tbody td {
+        padding: 14px 14px;
+        vertical-align: middle;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      }
+      /* ---- عمود العميل ---- */
+
+      #section-ratings .customer-cell {
+        display: flex;
+        flex-direction: column;
+      }
+
+      #section-ratings .customer-cell .name {
+        font-weight: 700;
+        color: var(--text-light);
+        font-size: 0.95rem;
+      }
+
+      #section-ratings .customer-cell .phone {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        margin-top: 2px;
+      }
+      /* ---- عمود التقييم (النجوم) ---- */
+
+      #section-ratings .stars-cell {
+        color: var(--gold);
+        font-size: 1rem;
+        letter-spacing: 2px;
+        direction: ltr;
+        display: inline-block;
+        font-weight: 700;
+      }
+      /* ---- عمود التعليق ---- */
+
+      #section-ratings .comment-cell {
+        max-width: 180px;
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
+      }
+      /* ---- الرد المختصر في الجدول ---- */
+
+      #section-ratings .response-preview {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        margin-top: 4px;
+        max-width: 120px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      /* ---- بادج الحالة المحسنة ---- */
+
+      #section-ratings .status-badge {
+        padding: 5px 14px;
+        border-radius: 20px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid transparent;
+      }
+
+      #section-ratings .status-badge::before {
+        content: "";
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+      }
+
+      #section-ratings .status-pending {
+        background: rgba(241, 196, 15, 0.12);
+        color: #f4d03f;
+        border-color: rgba(241, 196, 15, 0.2);
+      }
+
+      #section-ratings .status-pending::before {
+        background: #f4d03f;
+      }
+
+      #section-ratings .status-approved {
+        background: rgba(46, 204, 113, 0.12);
+        color: #58d68d;
+        border-color: rgba(46, 204, 113, 0.2);
+      }
+
+      #section-ratings .status-approved::before {
+        background: #58d68d;
+      }
+
+      #section-ratings .status-rejected {
+        background: rgba(231, 76, 60, 0.12);
+        color: #ec7063;
+        border-color: rgba(231, 76, 60, 0.2);
+      }
+
+      #section-ratings .status-rejected::before {
+        background: #ec7063;
+      }
+
+      #section-ratings .status-responded {
+        background: rgba(52, 152, 219, 0.12);
+        color: #5dade2;
+        border-color: rgba(52, 152, 219, 0.2);
+      }
+
+      #section-ratings .status-responded::before {
+        background: #5dade2;
+      }
+      /* ---- بادج الخدمة المحسنة ---- */
+
+      #section-ratings .service-badge {
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 0.65rem;
+        font-weight: 700;
+        display: inline-block;
+        border: 1px solid transparent;
+      }
+
+      #section-ratings .service-takeaway {
+        background: rgba(93, 173, 226, 0.12);
+        color: #5dade2;
+        border-color: rgba(93, 173, 226, 0.15);
+      }
+
+      #section-ratings .service-dinein {
+        background: rgba(88, 214, 141, 0.12);
+        color: #58d68d;
+        border-color: rgba(88, 214, 141, 0.15);
+      }
+
+      #section-ratings .service-delivery {
+        background: rgba(244, 208, 63, 0.12);
+        color: #f4d03f;
+        border-color: rgba(244, 208, 63, 0.15);
+      }
+      /* ---- عمود الإجراءات (الأزرار) ---- */
+
+      #section-ratings .actions-cell {
+        text-align: center;
+      }
+
+      #section-ratings .actions-cell .dropdown-toggle {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        color: var(--text-muted);
+        border-radius: 8px;
+        padding: 6px 14px;
+        font-size: 0.85rem;
+        transition: all 0.3s ease;
+      }
+
+      #section-ratings .actions-cell .dropdown-toggle:hover {
+        background: rgba(201, 168, 76, 0.1);
+        border-color: var(--border-gold);
+        color: var(--gold);
+      }
+
+      #section-ratings .actions-cell .dropdown-toggle::after {
+        display: none;
+      }
+
+      #section-ratings .actions-cell .dropdown-menu {
+        background: #1a1410;
+        border: 1px solid var(--border-gold);
+        border-radius: 12px;
+        padding: 6px;
+        min-width: 160px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+      }
+
+      #section-ratings .actions-cell .dropdown-item {
+        color: var(--text-muted);
+        border-radius: 8px;
+        padding: 8px 16px;
+        font-size: 0.85rem;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      #section-ratings .actions-cell .dropdown-item:hover {
+        background: rgba(201, 168, 76, 0.08);
+        color: var(--gold-light);
+      }
+
+      #section-ratings .actions-cell .dropdown-item i {
+        width: 18px;
+        text-align: center;
+        font-size: 0.9rem;
+      }
+
+      #section-ratings .actions-cell .dropdown-item.text-danger:hover {
+        background: rgba(184, 90, 74, 0.1);
+        color: #ff6b5a;
+      }
+      /* ---- الترقيم (Pagination) ---- */
+
+      #pagination {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 22px;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        background: rgba(0, 0, 0, 0.15);
+      }
+
+      #pagination .page-info {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+      }
+
+      #pagination .btn-outline-secondary {
+        color: var(--text-muted);
+        border-color: rgba(255, 255, 255, 0.08);
+        padding: 8px 20px;
+        border-radius: 10px;
+        font-size: 0.85rem;
+        transition: all 0.3s ease;
+        background: transparent;
+      }
+
+      #pagination .btn-outline-secondary:hover:not(:disabled) {
+        background: rgba(201, 168, 76, 0.1);
+        border-color: var(--gold);
+        color: var(--gold);
+      }
+
+      #pagination .btn-outline-secondary:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+      }
+      /* ============================================================
+   Responsive - صفحة التقييمات
+   ============================================================ */
+      /* تابلت */
+
+      @media (max-width: 992px) {
+        #section-ratings .table thead th,
+        #section-ratings .table tbody td {
+          padding: 10px 10px;
+          font-size: 0.8rem;
+        }
+        #section-ratings .comment-cell {
+          max-width: 100px;
+        }
+        #section-ratings .filter-bar {
+          padding: 14px 16px;
+          gap: 10px;
+        }
+        #section-ratings .filter-bar .form-select,
+        #section-ratings .filter-bar .form-control {
+          min-width: 130px;
+          padding: 8px 12px;
+          font-size: 0.85rem;
+        }
+      }
+      /* موبايل */
+
+      @media (max-width: 768px) {
+        #section-ratings .filter-bar {
+          padding: 12px 14px;
+          flex-direction: column;
+          gap: 10px;
+        }
+        #section-ratings .filter-bar .form-select,
+        #section-ratings .filter-bar .form-control,
+        #section-ratings .filter-bar .btn-gold {
+          width: 100%;
+          min-width: unset;
+        }
+        #section-ratings .filter-bar .btn-gold {
+          justify-content: center;
+        }
+        #section-ratings .table thead th:nth-child(4),
+        #section-ratings .table tbody td:nth-child(4) {
+          display: none;
+        }
+        #section-ratings .table thead th:nth-child(5),
+        #section-ratings .table tbody td:nth-child(5) {
+          display: none;
+        }
+        #section-ratings .table thead th,
+        #section-ratings .table tbody td {
+          padding: 8px 8px;
+          font-size: 0.75rem;
+        }
+        #section-ratings .customer-cell .name {
+          font-size: 0.85rem;
+        }
+        #section-ratings .stars-cell {
+          font-size: 0.8rem;
+          letter-spacing: 1px;
+        }
+        #section-ratings .actions-cell .dropdown-toggle {
+          padding: 4px 10px;
+          font-size: 0.75rem;
+        }
+        #pagination {
+          flex-direction: column;
+          gap: 12px;
+          padding: 14px 16px;
+        }
+        #pagination .btn-outline-secondary {
+          padding: 6px 14px;
+          font-size: 0.8rem;
+        }
+        #section-ratings > h2 {
+          font-size: 1.4rem;
+        }
+      }
+      /* موبايل صغير */
+
+      @media (max-width: 576px) {
+        #section-ratings .table thead th:nth-child(3),
+        #section-ratings .table tbody td:nth-child(3) {
+          display: none;
+        }
+        #section-ratings .table thead th:nth-child(7),
+        #section-ratings .table tbody td:nth-child(7) {
+          padding: 6px 4px;
+        }
+        #section-ratings .table-container {
+          padding: 0;
+          border-radius: 12px;
+        }
+        #section-ratings .table thead th {
+          padding: 10px 6px;
+          font-size: 0.65rem;
+        }
+        #section-ratings .table tbody td {
+          padding: 8px 6px;
+          font-size: 0.7rem;
+        }
+        #section-ratings .status-badge {
+          padding: 3px 10px;
+          font-size: 0.6rem;
+        }
+        #section-ratings .service-badge {
+          padding: 2px 8px;
+          font-size: 0.55rem;
+        }
+        #section-ratings .customer-cell .phone {
+          font-size: 0.6rem;
+        }
+      }
+      /* ============================================================
+   تحسين التمرير الأفقي للجدول
+   ============================================================ */
+
+      .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .table-responsive::-webkit-scrollbar {
+        height: 5px;
+      }
+
+      .table-responsive::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .table-responsive::-webkit-scrollbar-thumb {
+        background: var(--gold);
+        border-radius: 10px;
+      }
+      /* ============================================================
+   رسالة "لا توجد تقييمات"
+   ============================================================ */
+
+      #section-ratings .empty-state {
+        padding: 40px 20px;
+        text-align: center;
+        color: var(--text-muted);
+      }
+
+      #section-ratings .empty-state i {
+        font-size: 3rem;
+        color: var(--border-gold);
+        margin-bottom: 15px;
+        display: block;
+      }
+
+      #section-ratings .empty-state p {
+        font-size: 1rem;
+      }
+      /* ============================================================
+   تحسينات Modal العرض
+   ============================================================ */
+
+      #viewRatingContent .service-badge {
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        display: inline-block;
+        border: 1px solid transparent;
+      }
+
+      #viewRatingContent .status-badge {
+        padding: 5px 14px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid transparent;
+      }
+
+      #viewRatingContent .status-badge::before {
+        content: "";
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+      }
+
+      #viewRatingContent .status-pending {
+        background: rgba(241, 196, 15, 0.12);
+        color: #f4d03f;
+        border-color: rgba(241, 196, 15, 0.2);
+      }
+
+      #viewRatingContent .status-pending::before {
+        background: #f4d03f;
+      }
+
+      #viewRatingContent .status-approved {
+        background: rgba(46, 204, 113, 0.12);
+        color: #58d68d;
+        border-color: rgba(46, 204, 113, 0.2);
+      }
+
+      #viewRatingContent .status-approved::before {
+        background: #58d68d;
+      }
+
+      #viewRatingContent .status-rejected {
+        background: rgba(231, 76, 60, 0.12);
+        color: #ec7063;
+        border-color: rgba(231, 76, 60, 0.2);
+      }
+
+      #viewRatingContent .status-rejected::before {
+        background: #ec7063;
+      }
+
+      #viewRatingContent .status-responded {
+        background: rgba(52, 152, 219, 0.12);
+        color: #5dade2;
+        border-color: rgba(52, 152, 219, 0.2);
+      }
+
+      #viewRatingContent .status-responded::before {
+        background: #5dade2;
+      }
+
+      #viewRatingContent .service-takeaway {
+        background: rgba(93, 173, 226, 0.12);
+        color: #5dade2;
+        border-color: rgba(93, 173, 226, 0.15);
+      }
+
+      #viewRatingContent .service-dinein {
+        background: rgba(88, 214, 141, 0.12);
+        color: #58d68d;
+        border-color: rgba(88, 214, 141, 0.15);
+      }
+
+      #viewRatingContent .service-delivery {
+        background: rgba(244, 208, 63, 0.12);
+        color: #f4d03f;
+        border-color: rgba(244, 208, 63, 0.15);
+      }
+      /* ============================================================
+   بطاقات التعليقات
+   ============================================================ */
+
+      .comment-card {
+        background: linear-gradient(145deg, #2a1f18, #1f1610);
+        border: 1px solid var(--border-gold);
+        border-radius: 16px;
+        padding: 20px;
+        transition: all 0.3s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .comment-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(201, 168, 76, 0.4);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+      }
+
+      .comment-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 12px;
+      }
+
+      .comment-user {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--gold), #b8942e);
+        color: #1a1410;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.1rem;
+      }
+
+      .user-name {
+        font-weight: 700;
+        color: var(--text-light);
+        font-size: 0.95rem;
+      }
+
+      .user-service {
+        font-size: 0.7rem;
+      }
+
+      .comment-rating {
+        text-align: left;
+        font-size: 0.9rem;
+      }
+
+      .comment-body {
+        flex: 1;
+        margin: 10px 0;
+      }
+
+      .comment-text {
+        color: var(--text-light);
+        font-size: 0.95rem;
+        line-height: 1.8;
+        margin: 0;
+      }
+
+      .comment-response {
+        background: rgba(201, 168, 76, 0.06);
+        border-radius: 10px;
+        padding: 10px 14px;
+        margin-top: 10px;
+        border-right: 3px solid var(--gold);
+      }
+
+      .response-text {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        margin: 4px 0 0 0;
+      }
+
+      .comment-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 12px;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        margin-top: 10px;
+      }
+
+      .comment-actions {
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .btn-view-comment {
+        background: rgba(201, 168, 76, 0.08);
+        border: 1px solid var(--border-gold);
+        color: var(--gold);
+        padding: 6px 16px;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+      }
+
+      .btn-view-comment:hover {
+        background: rgba(201, 168, 76, 0.15);
+        transform: scale(1.02);
+      }
+      /* ============================================================
+   تحسينات مودال العرض
+   ============================================================ */
+
+      #viewRatingModal .modal-content {
+        background: linear-gradient(145deg, #2a1f18, #1a1410);
+        border: 1px solid var(--border-gold);
+        border-radius: 20px;
+        color: var(--text-light);
+        max-height: 90vh;
+      }
+
+      #viewRatingModal .modal-header {
+        border-bottom: 1px solid var(--border-gold);
+        padding: 16px 24px;
+      }
+
+      #viewRatingModal .modal-header .modal-title {
+        color: var(--gold);
+        font-weight: 700;
+        font-size: 1.2rem;
+      }
+
+      #viewRatingModal .modal-body {
+        padding: 24px;
+        max-height: calc(90vh - 140px);
+        overflow-y: auto;
+      }
+
+      #viewRatingModal .modal-body::-webkit-scrollbar {
+        width: 5px;
+      }
+
+      #viewRatingModal .modal-body::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 10px;
+      }
+
+      #viewRatingModal .modal-body::-webkit-scrollbar-thumb {
+        background: var(--gold);
+        border-radius: 10px;
+      }
+
+      #viewRatingModal .modal-footer {
+        border-top: 1px solid var(--border-gold);
+        padding: 12px 24px;
+      }
+
+      #viewRatingModal .btn-close {
+        filter: invert(1) brightness(0.7);
+      }
+      /* تحسين البادجات داخل المودال */
+
+      #viewRatingModal .service-badge {
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        display: inline-block;
+        border: 1px solid transparent;
+      }
+
+      #viewRatingModal .status-badge {
+        padding: 4px 14px;
+        border-radius: 20px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid transparent;
+      }
+
+      #viewRatingModal .status-badge::before {
+        content: "";
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+      }
+
+      #viewRatingModal .status-pending {
+        background: rgba(241, 196, 15, 0.12);
+        color: #f4d03f;
+        border-color: rgba(241, 196, 15, 0.2);
+      }
+
+      #viewRatingModal .status-pending::before {
+        background: #f4d03f;
+      }
+
+      #viewRatingModal .status-approved {
+        background: rgba(46, 204, 113, 0.12);
+        color: #58d68d;
+        border-color: rgba(46, 204, 113, 0.2);
+      }
+
+      #viewRatingModal .status-approved::before {
+        background: #58d68d;
+      }
+
+      #viewRatingModal .status-rejected {
+        background: rgba(231, 76, 60, 0.12);
+        color: #ec7063;
+        border-color: rgba(231, 76, 60, 0.2);
+      }
+
+      #viewRatingModal .status-rejected::before {
+        background: #ec7063;
+      }
+
+      #viewRatingModal .status-responded {
+        background: rgba(52, 152, 219, 0.12);
+        color: #5dade2;
+        border-color: rgba(52, 152, 219, 0.2);
+      }
+
+      #viewRatingModal .status-responded::before {
+        background: #5dade2;
+      }
+
+      #viewRatingModal .service-takeaway {
+        background: rgba(93, 173, 226, 0.12);
+        color: #5dade2;
+        border-color: rgba(93, 173, 226, 0.15);
+      }
+
+      #viewRatingModal .service-dinein {
+        background: rgba(88, 214, 141, 0.12);
+        color: #58d68d;
+        border-color: rgba(88, 214, 141, 0.15);
+      }
+
+      #viewRatingModal .service-delivery {
+        background: rgba(244, 208, 63, 0.12);
+        color: #f4d03f;
+        border-color: rgba(244, 208, 63, 0.15);
+      }
+      /* Responsive */
+
+      @media (max-width: 576px) {
+        #viewRatingModal .modal-body {
+          padding: 16px;
+        }
+        #viewRatingModal .modal-body .row.g-2 {
+          grid-template-columns: 1fr !important;
+        }
+        #viewRatingModal .modal-body .col-6 {
+          width: 100% !important;
+          flex: 0 0 100% !important;
+        }
+      }
+      /* ============================================================
+   Responsive للتعليقات
+   ============================================================ */
+
+      @media (max-width: 768px) {
+        .comment-header {
+          flex-direction: column;
+          gap: 8px;
+        }
+        .comment-rating {
+          text-align: right;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ===== Login ===== -->
+    <div class="login-container" id="loginContainer">
+      <div class="logo">
+        <img src="./img/Asset 2.jpg" alt="عبدالحي الكبابجي" />
+        <h2>لوحة التحكم</h2>
+        <p>عبدالحي الكبابجي</p>
+      </div>
+      <form id="loginForm">
+        <div class="mb-3">
+          <label class="form-label">البريد الإلكتروني</label>
+          <input
+            type="email"
+            class="form-control"
+            id="loginEmail"
+            placeholder="****@****.com"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">كلمة المرور</label>
+          <input
+            type="password"
+            class="form-control"
+            id="loginPassword"
+            placeholder="••••••••"
+            required
+          />
+        </div>
+        <button type="submit" class="btn-submit w-100">
+          <i class="fas fa-sign-in-alt me-2"></i> دخول
+        </button>
+        <div
+          id="loginError"
+          class="text-danger mt-3 text-center"
+          style="display: none"
+        >
+          البريد أو كلمة المرور غير صحيحة
+        </div>
+      </form>
+    </div>
+
+    <!-- ===== Dashboard ===== -->
+    <div class="dashboard-container" id="dashboardContainer">
+      <!-- ===== Sidebar ===== -->
+      <div class="sidebar">
+        <div class="brand">
+          <img src="./img/Asset 2.jpg" alt="عبدالحي الكبابجي" />
+          <h4>عبدالحي الكبابجي</h4>
+          <small>لوحة التحكم</small>
+        </div>
+        <nav>
+          <a href="#" class="nav-link active" data-section="overview">
+            <i class="fas fa-chart-pie"></i> نظرة عامة
+          </a>
+          <a href="#" class="nav-link" data-section="ratings">
+            <i class="fas fa-star"></i> التقييمات
+          </a>
+          <a href="#" class="nav-link" data-section="analytics">
+            <i class="fas fa-chart-line"></i> التحليلات
+          </a>
+          <!-- <a href="#" class="nav-link" data-section="comments">
+            <i class="fas fa-comments"></i> التعليقات
+            <span class="badge bg-info text-dark float-start" id="commentsCount"
+              >0</span
+            >
+          </a> -->
+          <a href="#" class="nav-link" data-section="settings">
+            <i class="fas fa-cog"></i> الإعدادات
+          </a>
+          <a href="#" class="nav-link logout-btn" id="logoutBtn">
+            <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
+          </a>
+        </nav>
+      </div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <!-- نظرة عامة -->
+        <div id="section-overview">
+          <h2 class="mb-4">
+            <i class="fas fa-chart-pie me-2" style="color: var(--gold)"></i>نظرة
+            عامة
+          </h2>
+
+          <!-- الإحصائيات الرئيسية -->
+          <div class="row g-4 mb-4">
+            <div class="col-md-4 col-6">
+              <div class="stat-card">
+                <div class="icon"><i class="fas fa-star"></i></div>
+                <div class="number" id="statAvg">0</div>
+                <div class="label">متوسط التقييم</div>
+              </div>
+            </div>
+            <div class="col-md-4 col-6">
+              <div class="stat-card">
+                <div class="icon"><i class="fas fa-comments"></i></div>
+                <div class="number" id="statTotal">0</div>
+                <div class="label">إجمالي التقييمات</div>
+              </div>
+            </div>
+            <div class="col-md-4 col-6">
+              <div class="stat-card">
+                <div class="icon"><i class="fas fa-users"></i></div>
+                <div class="number" id="statCustomers">0</div>
+                <div class="label">عدد العملاء</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Service Stats -->
+          <div class="row g-4 mb-4">
+            <div class="col-md-4 col-6">
+              <div class="service-stat takeaway">
+                <div class="icon"><i class="fas fa-shopping-bag"></i></div>
+                <div class="number" id="statTakeaway">0</div>
+                <div class="label">تيك أواي</div>
+                <div class="sub-label">
+                  ⭐ <span id="statTakeawayAvg">0</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 col-6">
+              <div class="service-stat dinein">
+                <div class="icon"><i class="fas fa-utensils"></i></div>
+                <div class="number" id="statDinein">0</div>
+                <div class="label">الصالة</div>
+                <div class="sub-label">
+                  ⭐ <span id="statDineinAvg">0</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 col-6">
+              <div class="service-stat delivery">
+                <div class="icon"><i class="fas fa-truck"></i></div>
+                <div class="number" id="statDelivery">0</div>
+                <div class="label">الدليفري</div>
+                <div class="sub-label">
+                  ⭐ <span id="statDeliveryAvg">0</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Charts -->
+          <div class="row g-4">
+            <div class="col-md-6">
+              <div class="chart-container">
+                <canvas id="serviceChart"></canvas>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="chart-container">
+                <canvas id="ratingChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Activity -->
+          <div class="table-container mt-4">
+            <h5>
+              <i class="fas fa-clock me-2" style="color: var(--gold)"></i>آخر
+              التقييمات
+            </h5>
+            <div id="recentActivity"></div>
+          </div>
+        </div>
+
+        <!-- التقييمات -->
+        <div id="section-ratings" style="display: none">
+          <h2 class="mb-4">
+            <i class="fas fa-star me-2" style="color: var(--gold)"></i>إدارة
+            التقييمات
+          </h2>
+
+          <div class="filter-bar">
+            <select id="filterService" class="form-select">
+              <option value="all">جميع الخدمات</option>
+              <option value="takeaway">تيك أواي</option>
+              <option value="dinein">صالة</option>
+              <option value="delivery">دليفري</option>
+            </select>
+            <input
+              type="text"
+              id="searchRating"
+              placeholder="بحث بالاسم..."
+              class="form-control"
+            />
+            <button class="btn btn-gold" id="refreshBtn">
+              <i class="fas fa-sync"></i>
+            </button>
+          </div>
+
+          <div class="table-container">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>العميل</th>
+                    <th>الخدمة</th>
+                    <th>التقييم</th>
+                    <th>التعليق</th>
+                    <th>الإجراءات</th>
+                  </tr>
+                </thead>
+                <tbody id="ratingsBody"></tbody>
+              </table>
+            </div>
+            <div
+              id="pagination"
+              class="d-flex justify-content-between align-items-center mt-3"
+            >
+              <span id="paginationInfo"></span>
+              <div>
+                <button class="btn btn-sm btn-outline-secondary" id="prevPage">
+                  السابق
+                </button>
+                <button class="btn btn-sm btn-outline-secondary" id="nextPage">
+                  التالي
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- التحليلات -->
+        <div id="section-analytics" style="display: none">
+          <h2 class="mb-4">
+            <i class="fas fa-chart-line me-2" style="color: var(--gold)"></i
+            >التحليلات
+          </h2>
+          <div class="row g-4">
+            <div class="col-md-6">
+              <div class="chart-container" style="height: 300px">
+                <canvas id="trendChart"></canvas>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="stat-card">
+                <h5 style="color: var(--gold)">توزيع الخدمات</h5>
+                <div id="serviceDistribution" class="mt-3"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== صفحة التعليقات ===== -->
+        <!-- <div id="section-comments" style="display: none">
+          <h2 class="mb-4">
+            <i class="fas fa-comments me-2" style="color: var(--gold)"></i>جميع
+            التعليقات
+          </h2>
+
+          <div class="filter-bar">
+            <select id="commentFilterService" class="form-select">
+              <option value="all">📦 جميع الخدمات</option>
+              <option value="takeaway">🛍️ تيك أواي</option>
+              <option value="dinein">🍽️ صالة</option>
+              <option value="delivery">🚚 دليفري</option>
+            </select>
+            <select id="commentFilterRating" class="form-select">
+              <option value="all">⭐ جميع التقييمات</option>
+              <option value="5">★★★★★</option>
+              <option value="4">★★★★</option>
+              <option value="3">★★★</option>
+              <option value="2">★★</option>
+              <option value="1">★</option>
+            </select>
+            <input
+              type="text"
+              id="commentSearch"
+              placeholder="🔍 بحث في التعليقات..."
+              class="form-control"
+            />
+            <button class="btn-gold" id="refreshCommentsBtn">
+              <i class="fas fa-sync-alt"></i> تحديث
+            </button>
+          </div>
+
+          <div id="commentsContainer" class="row g-3"> -->
+            <!-- سيتم تعبئته بواسطة JavaScript -->
+          <!-- </div>
+
+          <div
+            id="commentPagination"
+            class="d-flex justify-content-between align-items-center mt-4"
+          >
+            <span id="commentPaginationInfo" class="text-muted"></span>
+            <div>
+              <button class="btn btn-outline-secondary" id="commentPrevPage">
+                <i class="fas fa-chevron-right"></i> السابق
+              </button>
+              <button class="btn btn-outline-secondary" id="commentNextPage">
+                التالي <i class="fas fa-chevron-left"></i>
+              </button>
+            </div>
+          </div>
+        </div>  -->
+
+        <!-- الإعدادات -->
+        <div id="section-settings" style="display: none">
+          <h2 class="mb-4">
+            <i class="fas fa-cog me-2" style="color: var(--gold)"></i>الإعدادات
+          </h2>
+          <div class="table-container">
+            <h5>تغيير كلمة المرور</h5>
+            <form id="changePasswordForm">
+              <div class="mb-3">
+                <label class="form-label">كلمة المرور الحالية</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="currentPassword"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">كلمة المرور الجديدة</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="newPassword"
+                  required
+                  minlength="6"
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">تأكيد كلمة المرور</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  id="confirmPassword"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-gold">
+                تغيير كلمة المرور
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Modal عرض التقييم ===== -->
+    <div class="modal fade" id="viewRatingModal" tabindex="-1">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">
+              <i class="fas fa-star" style="color: var(--gold)"></i> تفاصيل
+              التقييم
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body" id="viewRatingContent">
+            <!-- يتم تعبئته بواسطة JavaScript -->
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              <i class="fas fa-times"></i> إغلاق
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Scripts ===== -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+    <script>
+      // ===== Supabase =====
+      const supabaseUrl = "https://rmruhmstxzeeoqthrneg.supabase.co";
+      const supabaseKey =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJtcnVobXN0eHplZW9xdGhybmVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3NDgzNDYsImV4cCI6MjA5MzMyNDM0Nn0.WCMyEXEJwj-4TvqJi_UDN5w2uxrAf-ZYljWQthgR4Hg";
+      const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+      // ===== State =====
+      let currentSection = "overview";
+      let currentPage = 1;
+      const pageSize = 10;
+      let totalRatings = 0;
+      let serviceChart, ratingChart, trendChart;
+
+      // ===== Login =====
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+          const email = document.getElementById("loginEmail").value;
+          const password = document.getElementById("loginPassword").value;
+
+          const { data, error } = await supabaseClient
+            .from("users")
+            .select("*")
+            .eq("email", email)
+            .eq("password", password)
+            .maybeSingle();
+
+          if (data) {
+            localStorage.setItem("isLoggedIn", "true");
+            localStorage.setItem("userEmail", email);
+            localStorage.setItem("userName", data.name || "Admin");
+
+            document.getElementById("loginContainer").style.display = "none";
+            document.getElementById("dashboardContainer").style.display =
+              "block";
+            loadDashboard();
+          } else {
+            document.getElementById("loginError").style.display = "block";
+          }
+        });
+
+      // ===== Logout =====
+      document
+        .getElementById("logoutBtn")
+        .addEventListener("click", function () {
+          localStorage.removeItem("isLoggedIn");
+          localStorage.removeItem("userEmail");
+          localStorage.removeItem("userName");
+
+          document.getElementById("loginContainer").style.display = "block";
+          document.getElementById("dashboardContainer").style.display = "none";
+          document.getElementById("loginError").style.display = "none";
+        });
+
+      // ===== فحص الجلسة عند تحميل الصفحة =====
+      document.addEventListener("DOMContentLoaded", function () {
+        const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+
+        if (isLoggedIn) {
+          document.getElementById("loginContainer").style.display = "none";
+          document.getElementById("dashboardContainer").style.display = "block";
+          loadDashboard();
+
+          const savedSection =
+            localStorage.getItem("currentSection") || "overview";
+          currentSection = savedSection;
+
+          document.querySelectorAll('[id^="section-"]').forEach((el) => {
+            el.style.display = "none";
+          });
+          document.getElementById(`section-${savedSection}`).style.display =
+            "block";
+
+          document
+            .querySelectorAll(".sidebar .nav-link[data-section]")
+            .forEach((link) => {
+              link.classList.remove("active");
+              if (link.dataset.section === savedSection) {
+                link.classList.add("active");
+              }
+            });
+
+          if (savedSection === "ratings") loadRatings();
+          if (savedSection === "analytics") loadAnalytics();
+        //   if (savedSection === "comments") loadComments();
+        } else {
+          document.getElementById("loginContainer").style.display = "block";
+          document.getElementById("dashboardContainer").style.display = "none";
+        }
+      });
+
+      // ===== Navigation =====
+      document
+        .querySelectorAll(".sidebar .nav-link[data-section]")
+        .forEach((link) => {
+          link.addEventListener("click", function () {
+            document
+              .querySelectorAll(".sidebar .nav-link")
+              .forEach((l) => l.classList.remove("active"));
+            this.classList.add("active");
+
+            const section = this.dataset.section;
+            currentSection = section;
+            localStorage.setItem("currentSection", section);
+
+            document
+              .querySelectorAll('[id^="section-"]')
+              .forEach((el) => (el.style.display = "none"));
+            document.getElementById(`section-${section}`).style.display =
+              "block";
+
+            if (section === "analytics") loadAnalytics();
+            if (section === "ratings") loadRatings();
+            // if (section === "comments") loadComments();
+          });
+        });
+
+      // ===== Dashboard =====
+      async function loadDashboard() {
+        await loadStats();
+        await loadRecentActivity();
+        await loadCharts();
+        // loadComments();
+      }
+
+      async function loadStats() {
+        try {
+          const { data: analytics, error: analyticsError } =
+            await supabaseClient
+              .from("rating_analytics")
+              .select("*")
+              .maybeSingle();
+
+          if (analytics) {
+            document.getElementById("statAvg").textContent =
+              analytics.avg_rating ? analytics.avg_rating.toFixed(1) : "0";
+            document.getElementById("statTotal").textContent =
+              analytics.total_ratings || 0;
+            document.getElementById("statCustomers").textContent =
+              analytics.unique_customers || 0;
+            document.getElementById("statTakeaway").textContent =
+              analytics.takeaway_count || 0;
+            document.getElementById("statTakeawayAvg").textContent =
+              analytics.takeaway_avg ? analytics.takeaway_avg.toFixed(1) : "0";
+            document.getElementById("statDinein").textContent =
+              analytics.dinein_count || 0;
+            document.getElementById("statDineinAvg").textContent =
+              analytics.dinein_avg ? analytics.dinein_avg.toFixed(1) : "0";
+            document.getElementById("statDelivery").textContent =
+              analytics.delivery_count || 0;
+            document.getElementById("statDeliveryAvg").textContent =
+              analytics.delivery_avg ? analytics.delivery_avg.toFixed(1) : "0";
+          }
+        } catch (e) {
+          console.error("Error in loadStats:", e);
+        }
+      }
+      async function loadRecentActivity() {
+        try {
+          const { data, error } = await supabaseClient
+            .from("ratings")
+            .select("*")
+            .order("created_at", {
+              ascending: false,
+            })
+            .limit(5);
+
+          const container = document.getElementById("recentActivity");
+
+          if (error || !data || data.length === 0) {
+            container.innerHTML =
+              '<p class="text-muted">لا توجد تقييمات حديثة</p>';
+            return;
+          }
+
+          const serviceNames = {
+            takeaway: "تيك أواي",
+            dinein: "صالة",
+            delivery: "دليفري",
+          };
+          const serviceClass = {
+            takeaway: "service-takeaway",
+            dinein: "service-dinein",
+            delivery: "service-delivery",
+          };
+
+          container.innerHTML = data
+            .map(
+              (r) => `
+                    <div class="d-flex justify-content-between align-items-center py-2 border-bottom border-secondary border-opacity-10">
+                        <div>
+                            <strong>${r.customer_name}</strong>
+                            <span class="service-badge ${serviceClass[r.service_type] || ""} ms-2">${serviceNames[r.service_type] || r.service_type || "عام"}</span>
+                            <span class="ms-2" style="color: var(--gold);">${"★".repeat(r.rating)}</span>
+                        </div>
+                        <span class="text-muted small">${new Date(r.created_at).toLocaleDateString("ar-EG")}</span>
+                    </div>
+                `,
+            )
+            .join("");
+        } catch (e) {
+          console.error("Error in loadRecentActivity:", e);
+        }
+      }
+
+      async function loadCharts() {
+        try {
+          const { data: analytics } = await supabaseClient
+            .from("rating_analytics")
+            .select("*")
+            .maybeSingle();
+
+          const { data: stats } = await supabaseClient
+            .from("rating_stats")
+            .select("*")
+            .maybeSingle();
+
+          if (serviceChart) serviceChart.destroy();
+          if (ratingChart) ratingChart.destroy();
+
+          // Service Chart
+          const ctx1 = document.getElementById("serviceChart").getContext("2d");
+          serviceChart = new Chart(ctx1, {
+            type: "bar",
+            data: {
+              labels: ["تيك أواي", "الصالة", "الدليفري"],
+              datasets: [
+                {
+                  label: "عدد التقييمات",
+                  data: [
+                    analytics ? analytics.takeaway_count : 0,
+                    analytics ? analytics.dinein_count : 0,
+                    analytics ? analytics.delivery_count : 0,
+                  ],
+                  backgroundColor: ["#5DADE2", "#58D68D", "#F4D03F"],
+                  borderRadius: 8,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  labels: {
+                    color: "#B8A99A",
+                  },
+                },
+              },
+              scales: {
+                y: {
+                  ticks: {
+                    color: "#6A5D52",
+                  },
+                },
+                x: {
+                  ticks: {
+                    color: "#6A5D52",
+                  },
+                },
+              },
+            },
+          });
+
+          // Rating Distribution
+          const ctx2 = document.getElementById("ratingChart").getContext("2d");
+          ratingChart = new Chart(ctx2, {
+            type: "bar",
+            data: {
+              labels: ["★", "★★", "★★★", "★★★★", "★★★★★"],
+              datasets: [
+                {
+                  label: "عدد التقييمات",
+                  data: [
+                    stats ? stats.rating_1 : 0,
+                    stats ? stats.rating_2 : 0,
+                    stats ? stats.rating_3 : 0,
+                    stats ? stats.rating_4 : 0,
+                    stats ? stats.rating_5 : 0,
+                  ],
+                  backgroundColor: [
+                    "#E74C3C",
+                    "#F39C12",
+                    "#F1C40F",
+                    "#2ECC71",
+                    "#2ECC71",
+                  ],
+                  borderRadius: 8,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  labels: {
+                    color: "#B8A99A",
+                  },
+                },
+              },
+              scales: {
+                y: {
+                  ticks: {
+                    color: "#6A5D52",
+                  },
+                },
+                x: {
+                  ticks: {
+                    color: "#6A5D52",
+                  },
+                },
+              },
+            },
+          });
+        } catch (e) {
+          console.error("Error in loadCharts:", e);
+        }
+      }
+
+      // ===== Ratings =====
+      async function loadRatings() {
+        try {
+          const service = document.getElementById("filterService").value;
+          const search = document.getElementById("searchRating").value;
+
+          let query = supabaseClient.from("ratings").select("*", {
+            count: "exact",
+          });
+
+          if (service !== "all") query = query.eq("service_type", service);
+          if (search) query = query.ilike("customer_name", `%${search}%`);
+
+          const from = (currentPage - 1) * pageSize;
+          const to = from + pageSize - 1;
+
+          const { data, count, error } = await query
+            .order("created_at", {
+              ascending: false,
+            })
+            .range(from, to);
+
+          if (error) {
+            console.error("Error loading ratings:", error);
+            return;
+          }
+
+          totalRatings = count || 0;
+          renderRatings(data || []);
+          updatePagination();
+        } catch (e) {
+          console.error("Error in loadRatings:", e);
+        }
+      }
+
+      function renderRatings(data) {
+        const tbody = document.getElementById("ratingsBody");
+        if (data.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted">لا توجد تقييمات</td></tr>`;
+          return;
+        }
+
+        const serviceNames = {
+          takeaway: "تيك أواي",
+          dinein: "صالة",
+          delivery: "دليفري",
+        };
+        const serviceClass = {
+          takeaway: "service-takeaway",
+          dinein: "service-dinein",
+          delivery: "service-delivery",
+        };
+
+        tbody.innerHTML = data
+          .map(
+            (r, i) => `
+                            <tr>
+                                <td>${(currentPage - 1) * pageSize + i + 1}</td>
+                                <td>
+                                    <strong>${r.customer_name}</strong>
+                                    <div class="small ">${r.customer_phone || ""}</div>
+                                </td>
+                                <td>
+                                    <span class="service-badge ${serviceClass[r.service_type] || ""}">${serviceNames[r.service_type] || r.service_type || "عام"}</span>
+                                </td>
+                                <td><span style="color: var(--gold);">${"★".repeat(r.rating)}</span></td>
+                                <td>${r.comment ? r.comment.substring(0, 50) + (r.comment.length > 50 ? "..." : "") : "-"}</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <button class="btn btn-sm btn-outline-info" onclick="viewRating(${r.id})" title="عرض التقييم">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-danger" onclick="deleteRating(${r.id})" title="حذف التقييم">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `,
+          )
+          .join("");
+      }
+
+      function updatePagination() {
+        const totalPages = Math.ceil(totalRatings / pageSize);
+        const currentPageDisplay = currentPage || 1;
+        const totalPagesDisplay = totalPages || 1;
+
+        document.getElementById("paginationInfo").textContent =
+          ` الصفحة ${currentPageDisplay} من ${totalPagesDisplay}`;
+
+        document.getElementById("prevPage").disabled = currentPage <= 1;
+        document.getElementById("nextPage").disabled =
+          currentPage >= totalPages || totalPages === 0;
+      }
+
+      document.getElementById("prevPage").addEventListener("click", () => {
+        if (currentPage > 1) {
+          currentPage--;
+          loadRatings();
+        }
+      });
+
+      document.getElementById("nextPage").addEventListener("click", () => {
+        const totalPages = Math.ceil(totalRatings / pageSize);
+        if (currentPage < totalPages) {
+          currentPage++;
+          loadRatings();
+        }
+      });
+
+      document
+        .getElementById("filterService")
+        .addEventListener("change", () => {
+          currentPage = 1;
+          loadRatings();
+        });
+
+      document.getElementById("searchRating").addEventListener("input", () => {
+        currentPage = 1;
+        loadRatings();
+      });
+
+      document
+        .getElementById("refreshBtn")
+        .addEventListener("click", loadRatings);
+
+      // ===== حذف التقييم =====
+      window.deleteRating = async function (id) {
+        if (!confirm("⚠️ هل أنت متأكد من حذف هذا التقييم؟ لا يمكن التراجع!"))
+          return;
+
+        try {
+          const { error: detailsError } = await supabaseClient
+            .from("rating_details")
+            .delete()
+            .eq("rating_id", id);
+
+          if (detailsError) {
+            console.warn("⚠️ No details found for this rating:", detailsError);
+          }
+
+          const { error: ratingError } = await supabaseClient
+            .from("ratings")
+            .delete()
+            .eq("id", id);
+
+          if (ratingError) throw ratingError;
+
+          await loadRatings();
+          await loadStats();
+
+          alert("✅ تم حذف التقييم بنجاح");
+        } catch (e) {
+          console.error("❌ Error deleting rating:", e);
+          alert("❌ حدث خطأ في حذف التقييم: " + e.message);
+        }
+      };
+
+      // ===== Analytics =====
+      async function loadAnalytics() {
+        try {
+          const { data: analytics } = await supabaseClient
+            .from("rating_analytics")
+            .select("*")
+            .maybeSingle();
+
+          if (trendChart) trendChart.destroy();
+
+          const { data: trendData } = await supabaseClient
+            .from("ratings")
+            .select("created_at, rating, service_type")
+            .order("created_at", {
+              ascending: true,
+            });
+
+          const dates = {};
+          if (trendData && trendData.length > 0) {
+            trendData.forEach((r) => {
+              const date = new Date(r.created_at).toLocaleDateString("ar-EG");
+              if (!dates[date]) {
+                dates[date] = {
+                  sum: 0,
+                  count: 0,
+                };
+              }
+              dates[date].sum += r.rating;
+              dates[date].count++;
+            });
+          }
+
+          const labels = Object.keys(dates);
+          const avgData = labels.map((d) =>
+            (dates[d].sum / dates[d].count).toFixed(1),
+          );
+
+          const ctx = document.getElementById("trendChart").getContext("2d");
+          trendChart = new Chart(ctx, {
+            type: "line",
+            data: {
+              labels: labels.length > 0 ? labels : ["لا توجد بيانات"],
+              datasets: [
+                {
+                  label: "متوسط التقييم اليومي",
+                  data: avgData.length > 0 ? avgData : [0],
+                  borderColor: "#C9A84C",
+                  backgroundColor: "rgba(201, 168, 76, 0.1)",
+                  fill: true,
+                  tension: 0.3,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  labels: {
+                    color: "#B8A99A",
+                  },
+                },
+              },
+              scales: {
+                y: {
+                  ticks: {
+                    color: "#6A5D52",
+                  },
+                  min: 0,
+                  max: 5,
+                },
+                x: {
+                  ticks: {
+                    color: "#6A5D52",
+                  },
+                },
+              },
+            },
+          });
+
+          const container = document.getElementById("serviceDistribution");
+          if (analytics) {
+            const total = analytics.total_ratings || 1;
+            const services = [
+              {
+                name: "تيك أواي",
+                count: analytics.takeaway_count || 0,
+                color: "#5DADE2",
+              },
+              {
+                name: "الصالة",
+                count: analytics.dinein_count || 0,
+                color: "#58D68D",
+              },
+              {
+                name: "الدليفري",
+                count: analytics.delivery_count || 0,
+                color: "#F4D03F",
+              },
+            ];
+
+            container.innerHTML = services
+              .map((s) => {
+                const pct = ((s.count / total) * 100).toFixed(1);
+                return `
+                                    <div class="mb-2">
+                                        <div class="d-flex justify-content-between">
+                                            <span style="color: ${s.color};">${s.name}</span>
+                                            <span>${s.count} (${pct}%)</span>
+                                        </div>
+                                        <div class="progress" style="height: 6px; background: rgba(255,255,255,0.05); border-radius: 10px;">
+                                            <div class="progress-bar" style="width: ${pct}%; background: ${s.color}; border-radius: 10px;"></div>
+                                        </div>
+                                    </div>
+                                `;
+              })
+              .join("");
+          } else {
+            container.innerHTML =
+              '<p class="text-muted">لا توجد بيانات إحصائيات</p>';
+          }
+        } catch (e) {
+          console.error("Error in loadAnalytics:", e);
+        }
+      }
+
+      // ===== Change Password =====
+      document
+        .getElementById("changePasswordForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const current = document.getElementById("currentPassword").value;
+          const newPass = document.getElementById("newPassword").value;
+          const confirm = document.getElementById("confirmPassword").value;
+
+          if (newPass !== confirm) {
+            alert("كلمة المرور الجديدة وتأكيدها غير متطابقين");
+            return;
+          }
+
+          if (newPass.length < 6) {
+            alert("كلمة المرور يجب أن تكون 6 أحرف على الأقل");
+            return;
+          }
+
+          try {
+            const { data: user } = await supabaseClient
+              .from("users")
+              .select("id")
+              .eq("password", current)
+              .maybeSingle();
+
+            if (!user) {
+              alert("كلمة المرور الحالية غير صحيحة");
+              return;
+            }
+
+            await supabaseClient
+              .from("users")
+              .update({
+                password: newPass,
+              })
+              .eq("id", user.id);
+
+            alert("✅ تم تغيير كلمة المرور بنجاح");
+            this.reset();
+          } catch (e) {
+            console.error("Error changing password:", e);
+            alert("❌ حدث خطأ في تغيير كلمة المرور");
+          }
+        });
+
+      // ===== عرض التقييم كامل مع جميع الإجابات =====
+      window.viewRating = function (id) {
+        supabaseClient
+          .from("ratings")
+          .select("*")
+          .eq("id", id)
+          .single()
+          .then(({ data: ratingData, error: ratingError }) => {
+            if (ratingError) {
+              console.error("Error fetching rating:", ratingError);
+              alert("حدث خطأ في جلب التقييم");
+              return;
+            }
+
+            if (ratingData) {
+              supabaseClient
+                .from("rating_details")
+                .select("*")
+                .eq("rating_id", id)
+                .maybeSingle()
+                .then(({ data: detailsData, error: detailsError }) => {
+                  if (detailsError) {
+                    console.error("Error fetching details:", detailsError);
+                  }
+
+                  const serviceNames = {
+                    takeaway: "تيك أواي",
+                    dinein: "صالة",
+                    delivery: "دليفري",
+                  };
+                  const serviceIcons = {
+                    takeaway: "🛍️",
+                    dinein: "🍽️",
+                    delivery: "🚚",
+                  };
+
+                  // ===== استخراج جميع البيانات =====
+                  let jsonData = null;
+                  if (ratingData.rating_data) {
+                    try {
+                      jsonData =
+                        typeof ratingData.rating_data === "string"
+                          ? JSON.parse(ratingData.rating_data)
+                          : ratingData.rating_data;
+                    } catch (e) {
+                      console.warn("Could not parse rating_data:", e);
+                    }
+                  }
+
+                  const allAnswers = {};
+
+                  if (detailsData) {
+                    Object.keys(detailsData).forEach((key) => {
+                      if (
+                        ![
+                          "id",
+                          "rating_id",
+                          "created_at",
+                          "updated_at",
+                        ].includes(key)
+                      ) {
+                        const val = detailsData[key];
+                        if (
+                          val !== undefined &&
+                          val !== null &&
+                          val !== "" &&
+                          val !== 0 &&
+                          val !== false
+                        ) {
+                          allAnswers[key] = val;
+                        }
+                      }
+                    });
+                  }
+
+                  if (jsonData && typeof jsonData === "object") {
+                    Object.keys(jsonData).forEach((key) => {
+                      const val = jsonData[key];
+                      if (
+                        val !== undefined &&
+                        val !== null &&
+                        val !== "" &&
+                        val !== 0 &&
+                        val !== false
+                      ) {
+                        if (!allAnswers[key]) {
+                          allAnswers[key] = val;
+                        }
+                      }
+                    });
+                  }
+
+                  // ===== تسميات الأسئلة =====
+                  const fieldLabels = {
+                    customer_name: "الاسم",
+                    customer_phone: "رقم الهاتف",
+                    service_type: "نوع الخدمة",
+                    service_quality: "جودة الخدمة",
+                    service_speed: "سرعة الاستجابة",
+                    service_professionalism: "الاحترافية",
+                    service_friendliness: "الود",
+                    product_quality: "جودة المنتج",
+                    product_value: "القيمة مقابل السعر",
+                    product_durability: "متانة المنتج",
+                    product_design: "التصميم",
+                    experience_satisfaction: "مدى الرضا",
+                    experience_recommend: "هل توصي به؟",
+                    experience_rating: "تقييم التجربة",
+                    staff_friendliness: "ودية الموظفين",
+                    staff_professionalism: "احترافية الموظفين",
+                    staff_knowledge: "خبرة الموظفين",
+                    cleanliness: "النظافة",
+                    ambiance: "الأجواء",
+                    location: "الموقع",
+                    parking: "موقف السيارات",
+                    food_quality: "جودة الطعام",
+                    food_taste: "الطعم",
+                    food_freshness: "الطزاجة",
+                    food_presentation: "تقديم الطعام",
+                    delivery_time: "وقت التوصيل",
+                    delivery_accuracy: "دقة الطلب",
+                    delivery_care: "عناية التوصيل",
+                    price_fairness: "عدالة الأسعار",
+                    wait_time: "وقت الانتظار",
+                    packaging: "جودة التغليف",
+                    overall_experience: "التجربة العامة",
+                    value_for_money: "القيمة مقابل المال",
+                    would_recommend: "هل توصي به؟",
+                    takeaway_quality: "جودة التيك أواي",
+                    takeaway_cleanliness: "نظافة التيك أواي",
+                    takeaway_packaging: "تغليف التيك أواي",
+                    takeaway_services: "خدمة التيك أواي",
+                    takeaway_time: "وقت التيك أواي",
+                    dinein_quality: "جودة الصالة",
+                    dinein_cleanliness: "نظافة الصالة",
+                    dinein_presentation: "تقديم الصالة",
+                    dinein_services: "خدمة الصالة",
+                    dinein_time: "وقت الصالة",
+                    dinein_comfort: "راحة الصالة",
+                    dinein_staff: "موظفي الصالة",
+                    delivery_quality: "جودة الدليفري",
+                    delivery_cleanliness: "نظافة الدليفري",
+                    delivery_packaging: "تغليف الدليفري",
+                    delivery_services: "خدمة الدليفري",
+                    delivery_time: "وقت الدليفري",
+                    delivery_condition: "حالة الطلب",
+                    delivery_driver: "السائق",
+                    comment: "التعليق",
+                    notes: "ملاحظات",
+                    feedback: "الملاحظات",
+                    suggestions: "الاقتراحات",
+                    rating_comment: "تعليق إضافي",
+                    general_suggestions: "الاقتراحات",
+                    general_mood: "المزاج العام",
+                    general_image: "الصورة العامة",
+                    rating: "التقييم العام",
+                  };
+
+                  // ===== بناء HTML =====
+                  let detailsHtml = `
+                                        <div style="direction: rtl; text-align: right;">
+                                            <!-- معلومات العميل -->
+                                            <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 15px; margin-bottom: 20px; border: 1px solid var(--border-gold);">
+                                                <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">👤 معلومات العميل</div>
+                                                <div class="row g-3">
+                                                    <div class="col-6">
+                                                        <div style="display: flex; align-items: center; gap: 10px;">
+                                                            <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), #b8942e); display: flex; align-items: center; justify-content: center; color: #1a1410; font-weight: 700; font-size: 1.2rem;">
+                                                                ${ratingData.customer_name ? ratingData.customer_name.charAt(0).toUpperCase() : "?"}
+                                                            </div>
+                                                            <div>
+                                                                <div style="font-weight: 700; font-size: 1.1rem; color: var(--text-light);">${ratingData.customer_name || "زائر"}</div>
+                                                                <div style="font-size: 0.75rem; color: var(--text-muted);">${ratingData.customer_phone || "رقم غير متوفر"}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6" style="text-align: left;">
+                                                        <div style="font-size: 0.75rem; color: var(--text-muted);">نوع الخدمة</div>
+                                                        <div style="font-weight: 600; font-size: 0.95rem;">
+                                                            <span class="service-badge ${ratingData.service_type === "takeaway" ? "service-takeaway" : ratingData.service_type === "dinein" ? "service-dinein" : "service-delivery"}">
+                                                                ${serviceIcons[ratingData.service_type] || ""} ${serviceNames[ratingData.service_type] || ratingData.service_type || "غير محدد"}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    `;
+
+                  // ===== تقييمات بالنجوم =====
+                  const starQuestions = Object.keys(allAnswers).filter(
+                    (key) => {
+                      const val = allAnswers[key];
+                      return (
+                        typeof val === "number" &&
+                        val >= 0 &&
+                        val <= 5 &&
+                        !["rating", "id", "rating_id"].includes(key)
+                      );
+                    },
+                  );
+
+                  if (starQuestions.length > 0) {
+                    detailsHtml += `
+                                            <div style="margin-bottom: 20px;">
+                                                <div style="font-size: 0.85rem; font-weight: 700; color: var(--gold); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                                                    <i class="fas fa-star"></i> تقييمات بالنجوم (${starQuestions.length})
+                                                </div>
+                                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                        `;
+
+                    starQuestions.forEach((key) => {
+                      const value = allAnswers[key];
+                      const label =
+                        fieldLabels[key] ||
+                        key
+                          .replace(/_/g, " ")
+                          .replace(/([A-Z])/g, " $1")
+                          .trim();
+
+                      detailsHtml += `
+                                                <div style="background: rgba(255,255,255,0.03); border-radius: 10px; padding: 10px 14px; border: 1px solid var(--border-gold);">
+                                                    <div style="font-size: 0.65rem; color: var(--text-muted); margin-bottom: 4px;">${label}</div>
+                                                    <div style="color: var(--gold); font-size: 1.1rem; letter-spacing: 2px;">${"★".repeat(value)}</div>
+                                                </div>
+                                            `;
+                    });
+
+                    detailsHtml += `
+                                                </div>
+                                            </div>
+                                        `;
+                  }
+
+                  // ===== الأسئلة المفتوحة =====
+                  const textQuestions = Object.keys(allAnswers).filter(
+                    (key) => {
+                      const val = allAnswers[key];
+                      return (
+                        typeof val === "string" &&
+                        val.trim().length > 0 &&
+                        ![
+                          "comment",
+                          "customer_name",
+                          "customer_phone",
+                          "service_type",
+                        ].includes(key)
+                      );
+                    },
+                  );
+
+                  if (
+                    ratingData.comment &&
+                    ratingData.comment.trim().length > 0
+                  ) {
+                    if (!textQuestions.includes("comment")) {
+                      textQuestions.push("comment");
+                    }
+                  }
+
+                  if (textQuestions.length > 0) {
+                    detailsHtml += `
+                                            <div style="margin-bottom: 20px;">
+                                                <div style="font-size: 0.85rem; font-weight: 700; color: var(--gold); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                                                    <i class="fas fa-pen"></i> الأسئلة المفتوحة (${textQuestions.length})
+                                                </div>
+                                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                        `;
+
+                    textQuestions.forEach((key) => {
+                      const value =
+                        key === "comment"
+                          ? ratingData.comment
+                          : allAnswers[key];
+                      const label =
+                        fieldLabels[key] ||
+                        key
+                          .replace(/_/g, " ")
+                          .replace(/([A-Z])/g, " $1")
+                          .trim();
+
+                      if (value && value.trim().length > 0) {
+                        detailsHtml += `
+                                                    <div style="background: rgba(255,255,255,0.03); border-radius: 10px; padding: 10px 14px; border: 1px solid var(--border-gold); grid-column: 1 / -1;">
+                                                        <div style="font-size: 0.65rem; color: var(--text-muted); margin-bottom: 4px;">${label}</div>
+                                                        <div style="color: var(--text-light); font-size: 0.9rem; line-height: 1.6;">${value}</div>
+                                                    </div>
+                                                `;
+                      }
+                    });
+
+                    detailsHtml += `
+                                                </div>
+                                            </div>
+                                        `;
+                  }
+
+                  // ===== التقييم العام =====
+                  detailsHtml += `
+                                        <div style="background: rgba(201,168,76,0.08); border-radius: 12px; padding: 15px; margin-bottom: 20px; border: 1px solid var(--border-gold); text-align: center;">
+                                            <div style="font-size: 0.8rem; color: var(--text-muted);">⭐ التقييم العام</div>
+                                            <div style="font-size: 2.2rem; color: var(--gold); letter-spacing: 5px; margin-top: 5px;">${"★".repeat(ratingData.rating || 0)}</div>
+                                            <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 5px;">${ratingData.rating || 0} من 5</div>
+                                        </div>
+                                    `;
+
+                  // ===== الرد =====
+                  if (ratingData.response) {
+                    detailsHtml += `
+                                            <div style="background: rgba(201,168,76,0.06); border-radius: 12px; padding: 15px; margin-bottom: 15px; border-right: 3px solid var(--gold);">
+                                                <div style="font-size: 0.75rem; color: var(--gold); margin-bottom: 5px;">💬 الرد من الإدارة</div>
+                                                <div style="color: var(--text-light); font-size: 0.95rem; line-height: 1.8;">${ratingData.response}</div>
+                                            </div>
+                                        `;
+                  }
+
+                  // ===== التاريخ فقط =====
+                  detailsHtml += `
+    <hr style="border-color: var(--border-gold); margin: 18px 0;">
+    <div class="row g-3">
+        <div class="col-12" style="text-align: center;">
+            <div style="font-size: 0.75rem; color: var(--text-muted);">📅 التاريخ</div>
+            <div style="color: var(--text-light); font-size: 0.85rem;">${ratingData.created_at ? new Date(ratingData.created_at).toLocaleString("ar-EG") : "غير معروف"}</div>
+        </div>
+    </div>
+</div>
+`;
+
+                  document.getElementById("viewRatingContent").innerHTML =
+                    detailsHtml;
+                  new bootstrap.Modal(
+                    document.getElementById("viewRatingModal"),
+                  ).show();
+                });
+            }
+          });
+      };
+
+      // ============================================================
+      // ===== قسم التعليقات =====
+      // ============================================================
+
+    //   let commentPage = 1;
+    //   const commentPageSize = 10;
+    //   let totalComments = 0;
+
+    //   async function loadComments() {
+    //     try {
+    //       const service = document.getElementById("commentFilterService").value;
+    //       const rating = document.getElementById("commentFilterRating").value;
+    //       const search = document.getElementById("commentSearch").value;
+
+    //       let query = supabaseClient
+    //         .from("ratings")
+    //         .select("*", {
+    //           count: "exact",
+    //         })
+    //         .not("comment", "is", null)
+    //         .neq("comment", "");
+
+    //       if (service !== "all") query = query.eq("service_type", service);
+    //       if (rating !== "all") query = query.eq("rating", parseInt(rating));
+    //       if (search) query = query.ilike("comment", `%${search}%`);
+
+    //       const from = (commentPage - 1) * commentPageSize;
+    //       const to = from + commentPageSize - 1;
+
+    //       const { data, count, error } = await query
+    //         .order("created_at", {
+    //           ascending: false,
+    //         })
+    //         .range(from, to);
+
+    //       if (error) {
+    //         console.error("Error loading comments:", error);
+    //         return;
+    //       }
+
+    //       totalComments = count || 0;
+    //       renderComments(data || []);
+    //       updateCommentPagination();
+
+    //       const commentsCountEl = document.getElementById("commentsCount");
+    //       if (commentsCountEl) commentsCountEl.textContent = totalComments;
+    //     } catch (e) {
+    //       console.error("Error in loadComments:", e);
+    //     }
+    //   }
+
+    //   function renderComments(data) {
+    //     const container = document.getElementById("commentsContainer");
+
+    //     if (data.length === 0) {
+    //       container.innerHTML = `
+    //                     <div class="col-12 text-center text-muted py-5">
+    //                         <i class="fas fa-inbox fa-3x d-block mb-3" style="color: var(--border-gold);"></i>
+    //                         <p style="font-size: 1.1rem;">لا توجد تعليقات</p>
+    //                     </div>
+    //                 `;
+    //       return;
+    //     }
+
+    //     const serviceNames = {
+    //       takeaway: "تيك أواي",
+    //       dinein: "صالة",
+    //       delivery: "دليفري",
+    //     };
+    //     const serviceIcons = {
+    //       takeaway: "🛍️",
+    //       dinein: "🍽️",
+    //       delivery: "🚚",
+    //     };
+    //     const serviceClass = {
+    //       takeaway: "service-takeaway",
+    //       dinein: "service-dinein",
+    //       delivery: "service-delivery",
+    //     };
+
+    //     container.innerHTML = data
+    //       .map(
+    //         (r) => `
+    //                     <div class="col-md-6 col-lg-4">
+    //                         <div class="comment-card">
+    //                             <div class="comment-header">
+    //                                 <div class="comment-user">
+    //                                     <div class="user-avatar">${r.customer_name.charAt(0).toUpperCase()}</div>
+    //                                     <div>
+    //                                         <div class="user-name">${r.customer_name}</div>
+    //                                         <div class="user-service">
+    //                                             <span class="service-badge ${serviceClass[r.service_type] || ""}">${serviceIcons[r.service_type] || ""} ${serviceNames[r.service_type] || r.service_type || "عام"}</span>
+    //                                         </div>
+    //                                     </div>
+    //                                 </div>
+    //                                 <div class="comment-rating">
+    //                                     <span style="color: var(--gold);">${"★".repeat(r.rating)}</span>
+    //                                     <span class="text-muted small">${r.rating}/5</span>
+    //                                 </div>
+    //                             </div>
+    //                             <div class="comment-body">
+    //                                 <p class="comment-text">${r.comment}</p>
+    //                                 ${
+    //                                   r.response
+    //                                     ? `
+    //                                     <div class="comment-response">
+    //                                         <small class="text-muted">💬 الرد:</small>
+    //                                         <p class="response-text">${r.response}</p>
+    //                                     </div>
+    //                                 `
+    //                                     : ""
+    //                                 }
+    //                             </div>
+    //                             <div class="comment-footer">
+    //                                 <span class="text-muted small">
+    //                                     <i class="far fa-clock"></i> ${new Date(r.created_at).toLocaleString("ar-EG")}
+    //                                 </span>
+    //                             </div>
+    //                             <div class="comment-actions">
+    //                                 <button class="btn-view-comment" onclick="viewRating(${r.id})">
+    //                                     <i class="fas fa-eye"></i> عرض التقييم
+    //                                 </button>
+    //                             </div>
+    //                         </div>
+    //                     </div>
+    //                 `,
+    //       )
+    //       .join("");
+    //   }
+
+    //   function updateCommentPagination() {
+    //     const totalPages = Math.ceil(totalComments / commentPageSize);
+    //     document.getElementById("commentPaginationInfo").textContent =
+    //       `الصفحة ${commentPage} من ${totalPages || 1} • ${totalComments} تعليق`;
+    //     document.getElementById("commentPrevPage").disabled = commentPage <= 1;
+    //     document.getElementById("commentNextPage").disabled =
+    //       commentPage >= totalPages || totalPages === 0;
+    //   }
+
+    //   document
+    //     .getElementById("commentPrevPage")
+    //     .addEventListener("click", () => {
+    //       if (commentPage > 1) {
+    //         commentPage--;
+    //         loadComments();
+    //       }
+    //     });
+
+    //   document
+    //     .getElementById("commentNextPage")
+    //     .addEventListener("click", () => {
+    //       const totalPages = Math.ceil(totalComments / commentPageSize);
+    //       if (commentPage < totalPages) {
+    //         commentPage++;
+    //         loadComments();
+    //       }
+    //     });
+
+    //   document
+    //     .getElementById("commentFilterService")
+    //     .addEventListener("change", () => {
+    //       commentPage = 1;
+    //       loadComments();
+    //     });
+
+    //   document
+    //     .getElementById("commentFilterRating")
+    //     .addEventListener("change", () => {
+    //       commentPage = 1;
+    //       loadComments();
+    //     });
+
+    //   document.getElementById("commentSearch").addEventListener("input", () => {
+    //     commentPage = 1;
+    //     loadComments();
+    //   });
+
+    //   document
+    //     .getElementById("refreshCommentsBtn")
+    //     .addEventListener("click", loadComments);
+
+      // ===== Auto Refresh =====
+      setInterval(() => {
+        if (currentSection === "overview") loadDashboard();
+        if (currentSection === "ratings") loadRatings();
+        // if (currentSection === "comments") loadComments();
+      }, 60000);
+
+      console.log("✅ تم تحميل لوحة التحكم بنجاح");
+    </script>
+  </body>
+</html>
