@@ -229,23 +229,20 @@
         touch-action: manipulation;
       }
 
-      /* ---- Hover للتاب العادي ---- */
       .service-tab:hover:not(.active) {
         color: rgba(0, 0, 0, 0.7);
         background: rgba(255, 255, 255, 0.5);
         border-color: rgba(0, 0, 0, 0.05);
       }
 
-      /* ---- التاب النشط: لون نبيتي ثابت ---- */
       .service-tab.active {
-        background: var(--red-dark) !important; /* #5c0000 */
+        background: var(--red-dark) !important;
         color: var(--white) !important;
         box-shadow: 0 4px 15px rgba(92, 0, 0, 0.3);
         border-color: var(--red-dark) !important;
         transform: scale(1.02);
       }
 
-      /* ---- التاب النشط عند hover أو focus: يفضل نفس اللون ---- */
       .service-tab.active:hover,
       .service-tab.active:focus,
       .service-tab.active:active {
@@ -256,7 +253,6 @@
         transform: scale(1.02);
       }
 
-      /* ---- أيقونة و badge داخل التاب ---- */
       .service-tab i {
         font-size: 1.1rem;
       }
@@ -276,7 +272,6 @@
         color: var(--red-dark);
       }
 
-      /* ---- Responsive للتبويبات ---- */
       @media (max-width: 576px) {
         .service-tab {
           font-size: 0.9rem;
@@ -296,14 +291,12 @@
        منع مشكلة الـ hover باللمس على الموبايل
     ============================================================ */
       @media (hover: none) {
-        /* إلغاء تأثير hover على التابات العادية */
         .service-tab:hover:not(.active) {
           color: rgba(0, 0, 0, 0.4);
           background: transparent;
           border-color: transparent;
         }
 
-        /* التاب النشط يفضل ثابت تماماً */
         .service-tab.active:hover,
         .service-tab.active:active {
           background: var(--red-dark) !important;
@@ -313,7 +306,6 @@
           transform: scale(1) !important;
         }
 
-        /* إلغاء تأثير hover على باقي العناصر */
         .rating-item:hover {
           border-color: transparent;
           background: var(--bg-light);
@@ -439,6 +431,16 @@
         font-weight: 700;
         color: var(--red-dark);
         margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      /* النجمة الحمراء بجوار عنوان الكارد */
+      .required-star {
+        color: #dc3545;
+        font-size: 1.2rem;
+        margin-right: 2px;
       }
 
       .rating-header .hint {
@@ -458,6 +460,9 @@
         }
         .rating-item {
           padding: 14px 12px;
+        }
+        .required-star {
+          font-size: 1rem;
         }
       }
 
@@ -653,6 +658,29 @@
       }
 
       /* ============================================================
+       Validation Error Style
+    ============================================================ */
+      .validation-error {
+        border-color: #dc3545 !important;
+        box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.15) !important;
+      }
+
+      .validation-error-stars .stars label {
+        color: rgba(220, 53, 69, 0.3) !important;
+      }
+
+      .validation-message {
+        color: #dc3545;
+        font-size: 0.85rem;
+        margin-top: 5px;
+        display: none;
+      }
+
+      .validation-message.show {
+        display: block;
+      }
+
+      /* ============================================================
        Footer
     ============================================================ */
       .footer-ratings {
@@ -761,9 +789,6 @@
         display: block !important;
       }
 
-      /* ============================================================
-       إزالة الـ hover الزائد للفون (عام)
-    ============================================================ */
       @media (hover: none) {
         .rating-item:hover {
           border-color: transparent;
@@ -826,7 +851,7 @@
       </div>
 
       <!-- FORM -->
-      <form id="ratingForm">
+      <form id="ratingForm" novalidate>
         <!-- ===== TAKEWAY ===== -->
         <div class="service-section active" id="takeaway-section">
           <div class="section-header">
@@ -838,7 +863,7 @@
             <div class="rating-item highlight">
               <div class="rating-header">
                 <i class="fas fa-spray-can"></i>
-                <label>النظافة</label>
+                <label>النظافة <span class="required-star">*</span></label>
                 <span class="hint">مكان التجهيز</span>
               </div>
               <div class="stars" data-field="takeaway_cleanliness">
@@ -878,12 +903,15 @@
                 />
                 <label for="tc1">★</label>
               </div>
+              <div class="validation-message" data-for="takeaway_cleanliness">
+                يرجى اختيار تقييم
+              </div>
             </div>
 
             <div class="rating-item highlight">
               <div class="rating-header">
                 <i class="fas fa-utensils"></i>
-                <label>جودة الأكل</label>
+                <label>جودة الأكل <span class="required-star">*</span></label>
                 <span class="hint">الطعم والنضارة</span>
               </div>
               <div class="stars" data-field="takeaway_quality">
@@ -923,12 +951,15 @@
                 />
                 <label for="tq1">★</label>
               </div>
+              <div class="validation-message" data-for="takeaway_quality">
+                يرجى اختيار تقييم
+              </div>
             </div>
 
             <div class="rating-item">
               <div class="rating-header">
                 <i class="fas fa-box"></i>
-                <label>التغليف</label>
+                <label>التغليف <span class="required-star">*</span></label>
                 <span class="hint">متين ومحكم</span>
               </div>
               <div class="stars" data-field="takeaway_packaging">
@@ -968,12 +999,15 @@
                 />
                 <label for="tp1">★</label>
               </div>
+              <div class="validation-message" data-for="takeaway_packaging">
+                يرجى اختيار تقييم
+              </div>
             </div>
 
             <div class="rating-item">
               <div class="rating-header">
                 <i class="fas fa-leaf"></i>
-                <label>خدمات الأكل</label>
+                <label>خدمات الأكل <span class="required-star">*</span></label>
                 <span class="hint">سلطات ومقبلات</span>
               </div>
               <div class="stars" data-field="takeaway_services">
@@ -1013,12 +1047,15 @@
                 />
                 <label for="ts1">★</label>
               </div>
+              <div class="validation-message" data-for="takeaway_services">
+                يرجى اختيار تقييم
+              </div>
             </div>
 
             <div class="rating-item full-width">
               <div class="rating-header">
                 <i class="fas fa-clock"></i>
-                <label>الوقت</label>
+                <label>الوقت <span class="required-star">*</span></label>
                 <span class="hint">سرعة التجهيز</span>
               </div>
               <div class="stars" data-field="takeaway_time">
@@ -1032,6 +1069,9 @@
                 <label for="tt2">★</label>
                 <input type="radio" name="takeaway_time" value="1" id="tt1" />
                 <label for="tt1">★</label>
+              </div>
+              <div class="validation-message" data-for="takeaway_time">
+                يرجى اختيار تقييم
               </div>
             </div>
           </div>
@@ -1048,7 +1088,7 @@
             <div class="rating-item highlight">
               <div class="rating-header">
                 <i class="fas fa-spray-can"></i>
-                <label>نظافة الصالة</label>
+                <label>نظافة الصالة <span class="required-star">*</span></label>
                 <span class="hint">أرضيات وطاولات</span>
               </div>
               <div class="stars" data-field="dinein_cleanliness">
@@ -1088,12 +1128,15 @@
                 />
                 <label for="dc1">★</label>
               </div>
+              <div class="validation-message" data-for="dinein_cleanliness">
+                يرجى اختيار تقييم
+              </div>
             </div>
 
             <div class="rating-item highlight">
               <div class="rating-header">
                 <i class="fas fa-utensils"></i>
-                <label>جودة الأكل</label>
+                <label>جودة الأكل <span class="required-star">*</span></label>
                 <span class="hint">طعم ونضارة</span>
               </div>
               <div class="stars" data-field="dinein_quality">
@@ -1108,12 +1151,17 @@
                 <input type="radio" name="dinein_quality" value="1" id="dq1" />
                 <label for="dq1">★</label>
               </div>
+              <div class="validation-message" data-for="dinein_quality">
+                يرجى اختيار تقييم
+              </div>
             </div>
 
             <div class="rating-item">
               <div class="rating-header">
                 <i class="fas fa-plate-wheat"></i>
-                <label>طريقة التقديم</label>
+                <label
+                  >طريقة التقديم <span class="required-star">*</span></label
+                >
                 <span class="hint">شكل وتنسيق</span>
               </div>
               <div class="stars" data-field="dinein_presentation">
@@ -1153,12 +1201,15 @@
                 />
                 <label for="dp1">★</label>
               </div>
+              <div class="validation-message" data-for="dinein_presentation">
+                يرجى اختيار تقييم
+              </div>
             </div>
 
             <div class="rating-item">
               <div class="rating-header">
                 <i class="fas fa-leaf"></i>
-                <label>خدمات الأكل</label>
+                <label>خدمات الأكل <span class="required-star">*</span></label>
                 <span class="hint">سلطات ومقبلات</span>
               </div>
               <div class="stars" data-field="dinein_services">
@@ -1173,12 +1224,15 @@
                 <input type="radio" name="dinein_services" value="1" id="ds1" />
                 <label for="ds1">★</label>
               </div>
+              <div class="validation-message" data-for="dinein_services">
+                يرجى اختيار تقييم
+              </div>
             </div>
 
             <div class="rating-item">
               <div class="rating-header">
                 <i class="fas fa-clock"></i>
-                <label>الوقت</label>
+                <label>الوقت <span class="required-star">*</span></label>
                 <span class="hint">سرعة التحضير</span>
               </div>
               <div class="stars" data-field="dinein_time">
@@ -1193,12 +1247,18 @@
                 <input type="radio" name="dinein_time" value="1" id="dt1" />
                 <label for="dt1">★</label>
               </div>
+              <div class="validation-message" data-for="dinein_time">
+                يرجى اختيار تقييم
+              </div>
             </div>
 
             <div class="rating-item highlight">
               <div class="rating-header">
                 <i class="fas fa-lightbulb"></i>
-                <label>الإضاءة والتكييفات</label>
+                <label
+                  >الإضاءة والتكييفات
+                  <span class="required-star">*</span></label
+                >
                 <span class="hint">راحة بصرية وحرارة</span>
               </div>
               <div class="stars" data-field="dinein_comfort">
@@ -1213,12 +1273,15 @@
                 <input type="radio" name="dinein_comfort" value="1" id="dcf1" />
                 <label for="dcf1">★</label>
               </div>
+              <div class="validation-message" data-for="dinein_comfort">
+                يرجى اختيار تقييم
+              </div>
             </div>
 
             <div class="rating-item highlight">
               <div class="rating-header">
                 <i class="fas fa-user-tie"></i>
-                <label>أسلوب الويتر</label>
+                <label>أسلوب الويتر <span class="required-star">*</span></label>
                 <span class="hint">احترام وابتسامة</span>
               </div>
               <div class="stars" data-field="dinein_staff">
@@ -1232,6 +1295,9 @@
                 <label for="dw2">★</label>
                 <input type="radio" name="dinein_staff" value="1" id="dw1" />
                 <label for="dw1">★</label>
+              </div>
+              <div class="validation-message" data-for="dinein_staff">
+                يرجى اختيار تقييم
               </div>
             </div>
           </div>
@@ -1248,7 +1314,7 @@
             <div class="rating-item highlight">
               <div class="rating-header">
                 <i class="fas fa-spray-can"></i>
-                <label>نظافة الأكل</label>
+                <label>نظافة الأكل <span class="required-star">*</span></label>
                 <span class="hint">نظيف وخالي من شوائب</span>
               </div>
               <div class="stars" data-field="delivery_cleanliness">
@@ -1288,12 +1354,15 @@
                 />
                 <label for="dlc1">★</label>
               </div>
+              <div class="validation-message" data-for="delivery_cleanliness">
+                يرجى اختيار تقييم
+              </div>
             </div>
 
             <div class="rating-item highlight">
               <div class="rating-header">
                 <i class="fas fa-utensils"></i>
-                <label>جودة الأكل</label>
+                <label>جودة الأكل <span class="required-star">*</span></label>
                 <span class="hint">طعم ونضارة</span>
               </div>
               <div class="stars" data-field="delivery_quality">
@@ -1333,12 +1402,15 @@
                 />
                 <label for="dlq1">★</label>
               </div>
+              <div class="validation-message" data-for="delivery_quality">
+                يرجى اختيار تقييم
+              </div>
             </div>
 
             <div class="rating-item">
               <div class="rating-header">
                 <i class="fas fa-box"></i>
-                <label>التغليف</label>
+                <label>التغليف <span class="required-star">*</span></label>
                 <span class="hint">محكم ومقاوم للتسريب</span>
               </div>
               <div class="stars" data-field="delivery_packaging">
@@ -1378,12 +1450,15 @@
                 />
                 <label for="dlp1">★</label>
               </div>
+              <div class="validation-message" data-for="delivery_packaging">
+                يرجى اختيار تقييم
+              </div>
             </div>
 
             <div class="rating-item">
               <div class="rating-header">
                 <i class="fas fa-leaf"></i>
-                <label>خدمات الأكل</label>
+                <label>خدمات الأكل <span class="required-star">*</span></label>
                 <span class="hint">سلطات ومقبلات</span>
               </div>
               <div class="stars" data-field="delivery_services">
@@ -1423,12 +1498,15 @@
                 />
                 <label for="dls1">★</label>
               </div>
+              <div class="validation-message" data-for="delivery_services">
+                يرجى اختيار تقييم
+              </div>
             </div>
 
             <div class="rating-item">
               <div class="rating-header">
                 <i class="fas fa-clock"></i>
-                <label>الوقت</label>
+                <label>الوقت <span class="required-star">*</span></label>
                 <span class="hint">سرعة التوصيل</span>
               </div>
               <div class="stars" data-field="delivery_time">
@@ -1443,13 +1521,15 @@
                 <input type="radio" name="delivery_time" value="1" id="dlt1" />
                 <label for="dlt1">★</label>
               </div>
+              <div class="validation-message" data-for="delivery_time">
+                يرجى اختيار تقييم
+              </div>
             </div>
 
-            <!-- السلامة (نجوم بدل الإيموجي) -->
             <div class="rating-item highlight">
               <div class="rating-header">
                 <i class="fas fa-check-double"></i>
-                <label>سلامة الأكل</label>
+                <label>سلامة الأكل <span class="required-star">*</span></label>
                 <span class="hint">وصل سليم ولا مقلوب؟</span>
               </div>
               <div class="stars" data-field="delivery_condition">
@@ -1489,12 +1569,15 @@
                 />
                 <label for="dlcon1">★</label>
               </div>
+              <div class="validation-message" data-for="delivery_condition">
+                يرجى اختيار تقييم
+              </div>
             </div>
 
             <div class="rating-item highlight">
               <div class="rating-header">
                 <i class="fas fa-motorcycle"></i>
-                <label>أسلوب الطيار</label>
+                <label>أسلوب الطيار <span class="required-star">*</span></label>
                 <span class="hint">احترام وابتسامة</span>
               </div>
               <div class="stars" data-field="delivery_driver">
@@ -1534,6 +1617,9 @@
                 />
                 <label for="dlr1">★</label>
               </div>
+              <div class="validation-message" data-for="delivery_driver">
+                يرجى اختيار تقييم
+              </div>
             </div>
           </div>
         </div>
@@ -1548,29 +1634,32 @@
 
           <div class="rating-grid">
             <div class="rating-item full-width">
-              <div class="rating-header">
-                <i class="fas fa-star"></i>
-                <label>التقييم العام للمطعم</label>
-                <span class="hint">من 1 إلى 5 نجوم</span>
-              </div>
-              <div class="stars large" data-field="general_rating">
-                <input type="radio" name="general_rating" value="5" id="gr5" />
-                <label for="gr5">★</label>
-                <input type="radio" name="general_rating" value="4" id="gr4" />
-                <label for="gr4">★</label>
-                <input type="radio" name="general_rating" value="3" id="gr3" />
-                <label for="gr3">★</label>
-                <input type="radio" name="general_rating" value="2" id="gr2" />
-                <label for="gr2">★</label>
-                <input type="radio" name="general_rating" value="1" id="gr1" />
-                <label for="gr1">★</label>
-              </div>
-            </div>
+  <div class="rating-header">
+    <i class="fas fa-star"></i>
+    <label>التقييم العام للمطعم <span class="required-star">*</span></label>
+    <span class="hint">من 1 إلى 5 نجوم</span>
+  </div>
+  <div class="stars large" data-field="general_rating">
+    <input type="radio" name="general_rating" value="5" id="gr5" required />
+    <label for="gr5">★</label>
+    <input type="radio" name="general_rating" value="4" id="gr4" required />
+    <label for="gr4">★</label>
+    <input type="radio" name="general_rating" value="3" id="gr3" required />
+    <label for="gr3">★</label>
+    <input type="radio" name="general_rating" value="2" id="gr2" required />
+    <label for="gr2">★</label>
+    <input type="radio" name="general_rating" value="1" id="gr1" required />
+    <label for="gr1">★</label>
+  </div>
+  <div class="validation-message" data-for="general_rating">يرجى اختيار تقييم عام</div>
+</div>
 
             <div class="rating-item full-width">
               <div class="rating-header">
                 <i class="fas fa-pen"></i>
-                <label>شاركنا تجربتك</label>
+                <label
+                  >شاركنا تجربتك <span class="required-star">*</span></label
+                >
                 <span class="hint">أكتب أي شيء تحب تقوله</span>
               </div>
               <textarea
@@ -1578,13 +1667,19 @@
                 rows="4"
                 placeholder="اكتب رأيك هنا..."
                 id="general_comment"
+                name="general_comment"
               ></textarea>
+              <div class="validation-message" data-for="general_comment">
+                يرجى كتابة رأيك
+              </div>
             </div>
 
             <div class="rating-item full-width">
               <div class="rating-header">
                 <i class="fas fa-lightbulb"></i>
-                <label>اقتراحاتك للتطوير</label>
+                <label
+                  >اقتراحاتك للتطوير <span class="required-star">*</span></label
+                >
                 <span class="hint">إيه اللي تحب نطوره؟</span>
               </div>
               <textarea
@@ -1592,13 +1687,20 @@
                 rows="3"
                 placeholder="اقتراحاتك..."
                 id="general_suggestions"
+                name="general_suggestions"
               ></textarea>
+              <div class="validation-message" data-for="general_suggestions">
+                يرجى كتابة اقتراحاتك
+              </div>
             </div>
 
             <div class="rating-item full-width">
               <div class="rating-header">
                 <i class="fas fa-smile"></i>
-                <label>كيف تصف تجربتك بكلمة؟</label>
+                <label
+                  >كيف تصف تجربتك بكلمة؟
+                  <span class="required-star">*</span></label
+                >
                 <span class="hint">اختر كلمة واحدة</span>
               </div>
               <div class="word-cloud" id="moodCloud">
@@ -1620,7 +1722,10 @@
                   مستوى
                 </button>
               </div>
-              <input type="hidden" id="general_mood" />
+              <input type="hidden" id="general_mood" name="general_mood" />
+              <div class="validation-message" data-for="general_mood">
+                يرجى اختيار كلمة تصف تجربتك
+              </div>
             </div>
 
             <!-- ===== معلومات العميل (اختياري) ===== -->
@@ -1703,6 +1808,46 @@
         delivery: document.getElementById("delivery-section"),
       };
 
+      // دالة لتحديث الـ required بناءً على التبويب النشط
+      function updateRequiredFields(activeService) {
+        // 1. إزالة required من جميع حقول الخدمات
+        const allServiceInputs = document.querySelectorAll(
+          "#takeaway-section input, #dinein-section input, #delivery-section input, #takeaway-section textarea, #dinein-section textarea, #delivery-section textarea",
+        );
+        allServiceInputs.forEach((el) => el.removeAttribute("required"));
+
+        // 2. إضافة required إلى حقول الخدمة النشطة فقط
+        const activeSection = document.getElementById(
+          `${activeService}-section`,
+        );
+        if (activeSection) {
+          const activeInputs =
+            activeSection.querySelectorAll("input, textarea");
+          activeInputs.forEach((el) => {
+            // نتأكد من أن العنصر ليس مخفياً أو جزءاً من word-cloud (نتركه للنهاية)
+            if (el.type !== "hidden") {
+              el.setAttribute("required", "");
+            }
+          });
+        }
+
+        // 3. التأكد من أن الحقول العامة (general) تبقى مطلوبة دائماً
+        document
+          .querySelectorAll(
+            '#general_comment, #general_suggestions, input[name="general_rating"]',
+          )
+          .forEach((el) => {
+            el.setAttribute("required", "");
+          });
+
+        // 4. حقل general_mood (hidden) نتعامل معه بشكل منفصل في الفالي ديشن
+        //    لكن نضيف له required عشان الفورم يشوفه
+        document.getElementById("general_mood").setAttribute("required", "");
+      }
+
+      // تشغيل الدالة عند التحميل (التبويب النشط هو takeaway)
+      updateRequiredFields("takeaway");
+
       tabs.forEach((tab) => {
         tab.addEventListener("click", function () {
           tabs.forEach((t) => t.classList.remove("active"));
@@ -1711,17 +1856,8 @@
           Object.keys(sections).forEach((key) => {
             sections[key].classList.toggle("active", key === service);
           });
-        });
-      });
-
-      // ===== EMOJI RATING =====
-      document.querySelectorAll(".emoji-rating").forEach((container) => {
-        const btns = container.querySelectorAll(".emoji-btn");
-        btns.forEach((btn) => {
-          btn.addEventListener("click", function () {
-            btns.forEach((b) => b.classList.remove("active"));
-            this.classList.add("active");
-          });
+          // تحديث الحقول الإجبارية
+          updateRequiredFields(service);
         });
       });
 
@@ -1737,11 +1873,157 @@
         });
       });
 
+      // ===== VALIDATION HELPER =====
+      function validateField(field) {
+        // نتحقق فقط إذا كان الحقل مطلوباً
+        if (!field.hasAttribute("required")) return true;
+
+        const valid = field.checkValidity();
+        const msg = document.querySelector(
+          `.validation-message[data-for="${field.name}"]`,
+        );
+        const container = field.closest(".rating-item");
+
+        if (!valid) {
+          if (container) {
+            container
+              .querySelector(".stars")
+              ?.classList.add("validation-error-stars");
+          }
+          if (msg) {
+            msg.classList.add("show");
+            msg.textContent = "هذا الحقل مطلوب";
+          }
+        } else {
+          if (container) {
+            container
+              .querySelector(".stars")
+              ?.classList.remove("validation-error-stars");
+          }
+          if (msg) {
+            msg.classList.remove("show");
+          }
+        }
+        return valid;
+      }
+
+      // ===== VALIDATE STARS (للتأكد من اختيار نجمة) =====
+      function validateStars(name) {
+        const radios = document.querySelectorAll(`input[name="${name}"]`);
+        // نتأكد إذا كان الحقل مطلوباً، وإذا لم يكن كذلك نعتبره صحيحاً
+        if (radios.length === 0) return true;
+        if (!radios[0].hasAttribute("required")) return true;
+
+        const checked = document.querySelector(`input[name="${name}"]:checked`);
+        const container = radios[0]?.closest(".rating-item");
+        const msg = document.querySelector(
+          `.validation-message[data-for="${name}"]`,
+        );
+
+        if (!checked) {
+          if (container) {
+            container
+              .querySelector(".stars")
+              ?.classList.add("validation-error-stars");
+          }
+          if (msg) {
+            msg.classList.add("show");
+            msg.textContent = "يرجى اختيار تقييم";
+          }
+          return false;
+        } else {
+          if (container) {
+            container
+              .querySelector(".stars")
+              ?.classList.remove("validation-error-stars");
+          }
+          if (msg) {
+            msg.classList.remove("show");
+          }
+          return true;
+        }
+      }
+
+      // ===== VALIDATE WORD CLOUD =====
+      function validateMood() {
+        const mood = document.getElementById("general_mood");
+        // حقل المود دايماً مطلوب
+        const container = mood.closest(".rating-item");
+        const msg = document.querySelector(
+          '.validation-message[data-for="general_mood"]',
+        );
+
+        if (!mood.value) {
+          if (container) {
+            container
+              .querySelector(".word-cloud")
+              ?.classList.add("validation-error");
+          }
+          if (msg) {
+            msg.classList.add("show");
+            msg.textContent = "يرجى اختيار كلمة تصف تجربتك";
+          }
+          return false;
+        } else {
+          if (container) {
+            container
+              .querySelector(".word-cloud")
+              ?.classList.remove("validation-error");
+          }
+          if (msg) {
+            msg.classList.remove("show");
+          }
+          return true;
+        }
+      }
+
       // ===== SUBMIT =====
       document
         .getElementById("ratingForm")
         .addEventListener("submit", async function (e) {
           e.preventDefault();
+
+          let isValid = true;
+
+          // Validate all required fields (input, textarea)
+          const requiredInputs = this.querySelectorAll(
+            "input[required], textarea[required]",
+          );
+          requiredInputs.forEach((input) => {
+            // Skip hidden inputs (handled separately)
+            if (input.type === "hidden") return;
+
+            // For radio buttons, check if any in the group is checked
+            if (input.type === "radio") {
+              const name = input.name;
+              if (!validateStars(name)) {
+                isValid = false;
+              }
+            } else {
+              if (!validateField(input)) {
+                isValid = false;
+              }
+            }
+          });
+
+          // Validate mood (word cloud)
+          if (!validateMood()) {
+            isValid = false;
+          }
+
+          if (!isValid) {
+            // Scroll to first error
+            const firstError = document.querySelector(
+              ".validation-error, .validation-error-stars, .show",
+            );
+            if (firstError) {
+              firstError.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+              });
+            }
+            return;
+          }
 
           const btn = document.getElementById("submitBtn");
           btn.disabled = true;
@@ -1773,14 +2055,6 @@
               const checked = container.querySelector("input:checked");
               if (checked) {
                 formData[field] = parseInt(checked.value);
-              }
-            });
-
-            document.querySelectorAll(".emoji-rating").forEach((container) => {
-              const field = container.dataset.field;
-              const active = container.querySelector(".emoji-btn.active");
-              if (active) {
-                formData[field] = active.value;
               }
             });
 

@@ -15,7 +15,6 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
-    l
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -38,6 +37,129 @@
 
     <link rel="stylesheet" href="./css/bootstrap.css" />
     <link rel="stylesheet" href="./css/style.css" />
+
+    <style>
+      .filter-section {
+        background: #2b1b17;
+        padding: 20px 25px;
+        border-radius: 15px;
+        margin: 30px 0;
+        box-shadow: 0 0 15px rgba(0,0,0,0.3);
+        direction: rtl;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 15px;
+      }
+      .filter-section label {
+        color: #f5e6d3;
+        font-size: 1.1rem;
+        margin-left: 10px;
+        font-weight: bold;
+        white-space: nowrap;
+      }
+      .filter-section select,
+      .filter-section input {
+        padding: 10px 20px;
+        border-radius: 30px;
+        border: none;
+        background: #f5e6d3;
+        color: #2b1b17;
+        font-weight: bold;
+        font-size: 1rem;
+        min-width: 150px;
+        cursor: pointer;
+      }
+      .filter-section select:focus,
+      .filter-section input:focus {
+        outline: 2px solid #d4a373;
+      }
+      .filter-section input::placeholder {
+        color: #6b5b54;
+        font-weight: normal;
+      }
+      .filter-search-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex: 1;
+        min-width: 200px;
+      }
+      .filter-search-group i {
+        color: #f5e6d3;
+        font-size: 1.2rem;
+      }
+      .filter-search-group input {
+        flex: 1;
+        min-width: 120px;
+      }
+      .filter-select-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .filter-select-group select {
+        min-width: 140px;
+      }
+      .category.hidden-category {
+        display: none !important;
+      }
+      .category .item .card.hidden-card {
+        display: none !important;
+      }
+      .no-results {
+        display: none;
+        text-align: center;
+        color: #f5e6d3;
+        font-size: 1.5rem;
+        padding: 40px 0;
+        width: 100%;
+      }
+      .no-results.show {
+        display: block;
+      }
+      .filter-reset-btn {
+        background: #d4a373;
+        border: none;
+        color: #2b1b17;
+        padding: 8px 18px;
+        border-radius: 30px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+        font-size: 0.9rem;
+        white-space: nowrap;
+      }
+      .filter-reset-btn:hover {
+        background: #e8c9a0;
+        transform: scale(1.02);
+      }
+      .filter-stats {
+        color: #f5e6d3;
+        font-size: 0.9rem;
+        margin-right: auto;
+        opacity: 0.8;
+        white-space: nowrap;
+      }
+      @media (max-width: 768px) {
+        .filter-section {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .filter-search-group,
+        .filter-select-group {
+          width: 100%;
+        }
+        .filter-select-group select {
+          flex: 1;
+        }
+        .filter-stats {
+          margin-right: 0;
+          text-align: center;
+        }
+      }
+    </style>
   </head>
   <body>
     <!-- Navbar -->
@@ -156,15 +278,40 @@
                 <h2>الأقســــام</h2>
               </div>
             </div>
-            <div class="categories">
+
+            <!-- فلتر الكلمات (Select Boxes) + فلتر البحث -->
+            <div class="filter-section" id="filterSection">
+              <div class="filter-select-group" id="filterSelectGroup">
+                <label for="wordFilter">🍽️ اختر الصنف:</label>
+                <select id="wordFilter">
+                  <option value="all">كل الأصناف</option>
+                </select>
+              </div>
+
+              <div class="filter-search-group">
+                <i class="fas fa-search"></i>
+                <input
+                  type="text"
+                  id="searchInput"
+                  placeholder="🔎 ابحث عن أي وجبة..."
+                />
+              </div>
+
+              <button class="filter-reset-btn" id="resetFilters">↺ إعادة تعيين</button>
+              <span class="filter-stats" id="filterStats"></span>
+            </div>
+
+            <div class="categories" id="categoriesContainer">
+              <!-- رسالة "لا توجد نتائج" -->
+              <div class="no-results" id="noResults">😕 لا توجد نتائج مطابقة للبحث</div>
+
               <!-- الدجاج -->
-              <div class="category" id="chicken">
+              <div class="category" id="chicken" data-category="chicken">
                 <div class="head-category">
                   <h3>قسم الدجاج</h3>
                 </div>
                 <div class="item">
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">فرخة مشوية</h5>
                       <p class="card-text text">تقدم مع عيش + سلطات</p>
@@ -172,7 +319,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">فرخة ع الفحم</h5>
                       <p class="card-text text">تقدم مع عيش + سلطات</p>
@@ -180,7 +326,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">فرخة تكا</h5>
                       <p class="card-text text">تقدم مع عيش + سلطات</p>
@@ -188,7 +333,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">بانيه مشوي</h5>
                       <p class="card-text text">تقدم مع عيش + سلطات</p>
@@ -196,7 +340,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">شيش طاووق</h5>
                       <p class="card-text text">تقدم مع عيش + سلطات</p>
@@ -204,7 +347,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">حمام مشوي</h5>
                       <p class="card-text text">تقدم مع عيش + سلطات</p>
@@ -212,7 +354,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">حمام محشي أرز</h5>
                       <p class="card-text text">تقدم مع عيش + سلطات</p>
@@ -220,7 +361,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">حمام محشي فريك</h5>
                       <p class="card-text text">تقدم مع عيش + سلطات</p>
@@ -228,7 +368,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">كبد وقوانص ع الفحم</h5>
                       <p class="card-text text">تقدم مع عيش + سلطات</p>
@@ -239,13 +378,12 @@
               </div>
 
               <!-- المشويات -->
-              <div class="category" id="bbq">
+              <div class="category" id="bbq" data-category="bbq">
                 <div class="head-category">
                   <h3>قسم المشويات</h3>
                 </div>
                 <div class="item">
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">كفتة ضاني</h5>
                       <p class="card-text text">تقدم مع عيش + سلطات</p>
@@ -253,7 +391,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">كفتة كندوز</h5>
                       <p class="card-text text">تقدم مع عيش + سلطات</p>
@@ -261,7 +398,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">طرب ضاني</h5>
                       <p class="card-text text">تقدم مع عيش + سلطات</p>
@@ -269,7 +405,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">طرب كندوز</h5>
                       <p class="card-text text">تقدم مع عيش + سلطات</p>
@@ -277,7 +412,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">كباب ضاني</h5>
                       <p class="card-text text">تقدم مع عيش + سلطات</p>
@@ -285,7 +419,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">ريش ضاني</h5>
                       <p class="card-text text">تقدم مع عيش + سلطات</p>
@@ -293,7 +426,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">استيك</h5>
                       <p class="card-text text">تقدم مع عيش + سلطات</p>
@@ -301,7 +433,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">سجق</h5>
                       <p class="card-text text">تقدم مع عيش + سلطات</p>
@@ -312,13 +443,12 @@
               </div>
 
               <!-- الساندوتشات -->
-              <div class="category" id="sandwiches">
+              <div class="category" id="sandwiches" data-category="sandwiches">
                 <div class="head-category">
                   <h3>قسم الساندوتشات</h3>
                 </div>
                 <div class="item">
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">كفتة صغير</h5>
                       <p class="card-text text">تقدم مع سلطات</p>
@@ -326,7 +456,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">كفتة كبير</h5>
                       <p class="card-text text">تقدم مع سلطات</p>
@@ -334,7 +463,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">طرب ضاني</h5>
                       <p class="card-text text">تقدم مع سلطات</p>
@@ -342,7 +470,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">شيش طاووق</h5>
                       <p class="card-text text">تقدم مع سلطات</p>
@@ -350,7 +477,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">سجق</h5>
                       <p class="card-text text">تقدم مع سلطات</p>
@@ -361,13 +487,12 @@
               </div>
 
               <!-- الحواوشي -->
-              <div class="category" id="hwawshi">
+              <div class="category" id="hwawshi" data-category="hawawshi">
                 <div class="head-category">
                   <h3>قسم الحواوشي</h3>
                 </div>
                 <div class="item">
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">عادي</h5>
                       <p class="card-text text">تقدم مع علبة طحينة / سلطة</p>
@@ -375,7 +500,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">مخصوص</h5>
                       <p class="card-text text">تقدم مع عيش + سلطات</p>
@@ -383,7 +507,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">ضاني صغير</h5>
                       <p class="card-text text">تقدم مع عيش + سلطات</p>
@@ -391,7 +514,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">ضاني كبير</h5>
                       <p class="card-text text">تقدم مع عيش + سلطات</p>
@@ -399,7 +521,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">لحم موتزاريلا</h5>
                       <p class="card-text text">تقدم مع عيش + سلطات</p>
@@ -407,7 +528,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">ميكس فراخ</h5>
                       <p class="card-text text">تقدم مع عيش + سلطات</p>
@@ -415,7 +535,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">ميكس سجق</h5>
                       <p class="card-text text">تقدم مع عيش + سلطات</p>
@@ -423,7 +542,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">ميكس لحوم</h5>
                       <p class="card-text text">تقدم مع عيش + سلطات</p>
@@ -431,7 +549,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">لحم ميكس جبن</h5>
                       <p class="card-text text">تقدم مع عيش + سلطات</p>
@@ -442,13 +559,12 @@
               </div>
 
               <!-- الوجبات -->
-              <div class="category" id="meals">
+              <div class="category" id="meals" data-category="meals">
                 <div class="head-category">
                   <h3>قسم الوجبات</h3>
                 </div>
                 <div class="item">
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">وجبة ربع فرخة ورك</h5>
                       <p class="card-text text">تقدم مع أرز + سلطات + عيش</p>
@@ -456,7 +572,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">وجبة ربع فرخة صدر</h5>
                       <p class="card-text text">تقدم مع أرز + سلطات + عيش</p>
@@ -464,7 +579,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">وجبة شيش طاووق</h5>
                       <p class="card-text text">تقدم مع أرز + سلطات + عيش</p>
@@ -472,7 +586,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">وجبة بانيه مشوي</h5>
                       <p class="card-text text">تقدم مع أرز + سلطات + عيش</p>
@@ -480,7 +593,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">وجبة كفتة</h5>
                       <p class="card-text text">تقدم مع أرز + سلطات + عيش</p>
@@ -488,7 +600,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">ميكس الجعان</h5>
                       <p class="card-text text">
@@ -498,7 +609,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">ميكس الرايق</h5>
                       <p class="card-text text">
@@ -508,7 +618,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">ميكس المعلم</h5>
                       <p class="card-text text">
@@ -518,7 +627,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">ميكس الحنان</h5>
                       <p class="card-text text">
@@ -528,7 +636,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">ميكس الصاروخ</h5>
                       <p class="card-text text">
@@ -538,7 +645,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">ميكس النزاهة</h5>
                       <p class="card-text text">
@@ -548,7 +654,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">ميكس التوفير</h5>
                       <p class="card-text text">
@@ -558,7 +663,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">ميكس العمدة</h5>
                       <p class="card-text text">
@@ -568,7 +672,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">ميكس الملوك</h5>
                       <p class="card-text text">
@@ -578,7 +681,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">ميكس عبدالحي</h5>
                       <p class="card-text text">
@@ -588,7 +690,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">ميكس الجوكر</h5>
                       <p class="card-text text">
@@ -598,7 +699,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">ميكس الوحوش</h5>
                       <p class="card-text text">
@@ -608,7 +708,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">ميكس الروقان</h5>
                       <p class="card-text text">
@@ -618,7 +717,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">ميكس VIP</h5>
                       <p class="card-text text">
@@ -628,7 +726,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">ميكس الدلع</h5>
                       <p class="card-text text">
@@ -642,13 +739,12 @@
               </div>
 
               <!-- الصواني -->
-              <div class="category" id="plates">
+              <div class="category" id="plates" data-category="plates">
                 <div class="head-category">
                   <h3>قسم الصواني</h3>
                 </div>
                 <div class="item">
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">صينية الفنان</h5>
                       <p class="card-text text">
@@ -658,7 +754,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">صينية السلطان</h5>
                       <p class="card-text text">
@@ -669,7 +764,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">صينية الكينج</h5>
                       <p class="card-text text">
@@ -680,7 +774,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">صينية الغلبان</h5>
                       <p class="card-text text">
@@ -691,7 +784,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">صينية السعادة</h5>
                       <p class="card-text text">
@@ -702,7 +794,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">صينية اللمة</h5>
                       <p class="card-text text">
@@ -713,7 +804,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">صينية الهرم</h5>
                       <p class="card-text text">
@@ -724,7 +814,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">صينية المدلعة</h5>
                       <p class="card-text text">
@@ -735,7 +824,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">صينية الصحاب</h5>
                       <p class="card-text text">
@@ -746,7 +834,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">صينية شهرزاد</h5>
                       <p class="card-text text">
@@ -757,7 +844,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">صينية الـ 4444</h5>
                       <p class="card-text text">
@@ -768,7 +854,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">صينية العيلة</h5>
                       <p class="card-text text">
@@ -778,7 +863,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">صينية البشوات</h5>
                       <p class="card-text text">
@@ -789,7 +873,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">صينية التوينز</h5>
                       <p class="card-text text">
@@ -800,7 +883,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">صينية العُمد</h5>
                       <p class="card-text text">
@@ -811,7 +893,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">صينية ولاد الناس</h5>
                       <p class="card-text text">
@@ -822,7 +903,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">صينية الـ 888</h5>
                       <p class="card-text text">
@@ -833,7 +913,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">صينية الـ 999</h5>
                       <p class="card-text text">
@@ -844,7 +923,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">صينية الحريفة</h5>
                       <p class="card-text text">
@@ -855,7 +933,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">صينية الحبايب</h5>
                       <p class="card-text text">
@@ -866,7 +943,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">صينية عبدالحي</h5>
                       <p class="card-text text">
@@ -877,7 +953,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">صينية الديناميت</h5>
                       <p class="card-text text">
@@ -888,7 +963,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">صينية المارد</h5>
                       <p class="card-text text">
@@ -899,7 +973,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">صينية ألف ليلة وليلة</h5>
                       <p class="card-text text">
@@ -910,7 +983,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">صينية الأبطال</h5>
                       <p class="card-text text">
@@ -921,7 +993,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">صينية الليلة الكبيرة</h5>
                       <p class="card-text text">
@@ -932,7 +1003,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">صينية الـ 5 نجوم</h5>
                       <p class="card-text text">
@@ -946,13 +1016,12 @@
               </div>
 
               <!-- الطواجن -->
-              <div class="category" id="twagen">
+              <div class="category" id="twagen" data-category="twagen">
                 <div class="head-category">
                   <h3>قسم الطواجن</h3>
                 </div>
                 <div class="item">
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">طاجن كبد وقوانص</h5>
                       <p class="card-text text">تقدم مع سلطات + عيش</p>
@@ -960,7 +1029,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">طاجن لحم بصل</h5>
                       <p class="card-text text">تقدم مع سلطات + عيش</p>
@@ -968,7 +1036,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">طاجن لحم بطاطس</h5>
                       <p class="card-text text">تقدم مع سلطات + عيش</p>
@@ -976,7 +1043,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">طاجن لحم خضار مشكل</h5>
                       <p class="card-text text">تقدم مع سلطات + عيش</p>
@@ -984,7 +1050,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">طاجن لحم بامية</h5>
                       <p class="card-text text">تقدم مع سلطات + عيش</p>
@@ -992,7 +1057,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">طاجن عكاوي</h5>
                       <p class="card-text text">تقدم مع سلطات + عيش</p>
@@ -1003,13 +1067,12 @@
               </div>
 
               <!-- المطبخ -->
-              <div class="category" id="kitchen">
+              <div class="category" id="kitchen" data-category="kitchen">
                 <div class="head-category">
                   <h3>قسم المطبخ</h3>
                 </div>
                 <div class="item">
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">ورقة لحمة</h5>
                       <p class="card-text text">تقدم مع سلطات + عيش</p>
@@ -1017,7 +1080,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">ورقة كبده</h5>
                       <p class="card-text text">تقدم مع سلطات + عيش</p>
@@ -1025,7 +1087,6 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">ورقة سجق</h5>
                       <p class="card-text text">تقدم مع سلطات + عيش</p>
@@ -1033,84 +1094,72 @@
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">طبق ممبار</h5>
                       <p class="price">75 جنيه</p>
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">رز معمر</h5>
                       <p class="price">70 جنيه</p>
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">شوربة كوارع</h5>
                       <p class="price">50 جنيه</p>
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">محشي ورق عنب</h5>
                       <p class="price">30 جنيه</p>
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">ملوخية</h5>
                       <p class="price">30 جنيه</p>
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">خضار سادة</h5>
                       <p class="price">25 جنيه</p>
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">أرز بالشعرية</h5>
                       <p class="price">15 جنيه</p>
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">شوربة لسان عصفور</h5>
                       <p class="price">15 جنيه</p>
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">أرز بسمتي سادة</h5>
                       <p class="price">30 جنيه</p>
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">أرز شعرية بالخلطة</h5>
                       <p class="price">35 جنيه</p>
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">مكرونة بشاميل</h5>
                       <p class="price">35 جنيه</p>
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">أرز بسمتي بالخلطة</h5>
                       <p class="price">50 جنيه</p>
@@ -1120,55 +1169,48 @@
               </div>
 
               <!-- السلطات والمقبلات -->
-              <div class="category" id="salads">
+              <div class="category" id="salads" data-category="salads">
                 <div class="head-category">
                   <h3>قسم السلطات والمقبلات</h3>
                 </div>
                 <div class="item">
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">سلطة خضراء</h5>
                       <p class="price">5 جنيه</p>
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">سلطة طحينة</h5>
                       <p class="price">5 جنيه</p>
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">مخلل مشكل</h5>
                       <p class="price">5 جنيه</p>
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">باذنجان مخلل</h5>
                       <p class="price">10 جنيه</p>
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">طماطم متبلة</h5>
                       <p class="price">10 جنيه</p>
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">بطاطس متبلة</h5>
                       <p class="price">10 جنيه</p>
                     </div>
                   </div>
                   <div class="card my-2" style="width: 17rem">
-                    <!-- <img src="..." class="card-img-top" alt="..." /> -->
                     <div class="card-body">
                       <h5 class="card-title title">طبق أوبشن</h5>
                       <p class="price">15 جنيه</p>
@@ -1190,33 +1232,154 @@
         : Designed by<br /><strong>Ziad Abdelkader</strong>
       </p>
     </footer>
-  </body>
-  <script src="./js/bootstrap.bundle.min.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      var offcanvasEl = document.getElementById("offcanvasNavbar");
-      var links = document.querySelectorAll(
-        "#offcanvasNavbar .nav-link, #offcanvasNavbar .dropdown-item",
-      );
 
-      links.forEach(function (link) {
-        link.addEventListener("click", function (e) {
-          var href = this.getAttribute("href");
-          if (href && href.startsWith("#")) {
-            e.preventDefault();
-            var offcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl);
-            if (offcanvas) {
-              offcanvas.hide();
-            }
-            setTimeout(function () {
-              var target = document.querySelector(href);
-              if (target) {
-                target.scrollIntoView({ behavior: "smooth" });
+    <script src="./js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // ---- كود الأوف كانفس ----
+        var offcanvasEl = document.getElementById("offcanvasNavbar");
+        var links = document.querySelectorAll(
+          "#offcanvasNavbar .nav-link, #offcanvasNavbar .dropdown-item"
+        );
+        links.forEach(function (link) {
+          link.addEventListener("click", function (e) {
+            var href = this.getAttribute("href");
+            if (href && href.startsWith("#")) {
+              e.preventDefault();
+              var offcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl);
+              if (offcanvas) {
+                offcanvas.hide();
               }
-            }, 350);
+              setTimeout(function () {
+                var target = document.querySelector(href);
+                if (target) {
+                  target.scrollIntoView({ behavior: "smooth" });
+                }
+              }, 350);
+            }
+          });
+        });
+
+        // ---- استخراج الكلمات الفريدة من عناوين الوجبات (باستبعاد الكلمات المزيفة) ----
+        const cards = document.querySelectorAll(".card");
+        const wordSet = new Set();
+
+        // الكلمات الممنوعة (أسماء الصواني والوجبات المبالغ فيها)
+        const bannedWords = [
+          'وجبة', 'ربع', 'فرخة', 'نص', 'ثلث', 'ثمن', 'كيلو', 'جوز', 'فرد', 'ورقة',
+          'صينية', 'ميكس', 'الجنان', 'الرايق', 'المعلم', 'الحنان', 'الصاروخ',
+          'النزاهة', 'التوفير', 'العمدة', 'الملوك', 'عبدالحي', 'الجوكر', 'الوحوش',
+          'الروقان', 'الدلع', 'الفنان', 'السلطان', 'الكينج', 'الغلبان', 'السعادة',
+          'اللمة', 'الهرم', 'المدلعة', 'الصحاب', 'شهرزاد', 'العيلة', 'البشوات',
+          'التوينز', 'العُمد', 'ولاد', 'الناس', 'الحريفة', 'الحبايب', 'الديناميت',
+          'المارد', 'ألف', 'ليلة', 'وليلة', 'الأبطال', 'الكبيرة', 'نجوم',
+          'عادي', 'مخصوص', 'صغير', 'كبير', 'سادة', 'مشكل', 'مخلي'
+        ];
+
+        cards.forEach(card => {
+          const title = card.querySelector(".card-title.title");
+          if (title) {
+            const text = title.textContent.trim();
+            // نأخذ الكلمات من العنوان ونفلترها
+            const words = text.split(/\s+/);
+            words.forEach(word => {
+              // شيل الكلمات القصيرة جداً والكلمات الممنوعة
+              if (word.length >= 2 && !bannedWords.includes(word)) {
+                wordSet.add(word);
+              }
+            });
           }
         });
+
+        // الكلمات الأساسية اللي عايزينها تظهر (حتى لو كانت في القائمة الممنوعة)
+        const essentialWords = ['كفتة', 'فراخ', 'شواية', 'فحم', 'كبد', 'قوانص', 'استيك', 'لحم', 'طرب', 'كباب', 'ريش', 'سجق', 'حمام', 'بانيه', 'شيش', 'طاووق', 'تكا', 'ممبار', 'ورق', 'عنب', 'ملوخية', 'خضار', 'بطاطس', 'بصل', 'بامية', 'عكاوي', 'كوارع', 'مكرونة', 'بشاميل', 'سلطة', 'طحينة', 'مخلل', 'باذنجان', 'طماطم', 'أوبشن'];
+
+        // إضافة الكلمات الأساسية بالقوة
+        essentialWords.forEach(word => {
+          wordSet.add(word);
+        });
+
+        // تحويل الـ Set إلى Array وترتيبها أبجدياً
+        const uniqueWords = Array.from(wordSet).sort();
+
+        // ---- إنشاء الـ Select Box ديناميكياً ----
+        const filterSelect = document.getElementById("wordFilter");
+        
+        // إضافة الخيارات
+        uniqueWords.forEach(word => {
+          const option = document.createElement("option");
+          option.value = word;
+          option.textContent = word;
+          filterSelect.appendChild(option);
+        });
+
+        // ---- عناصر الفلتر ----
+        const searchInput = document.getElementById("searchInput");
+        const resetBtn = document.getElementById("resetFilters");
+        const noResults = document.getElementById("noResults");
+        const filterStats = document.getElementById("filterStats");
+        const categories = document.querySelectorAll(".category");
+
+        function filterAll() {
+          const selectedWord = filterSelect.value;
+          const searchTerm = searchInput.value.trim().toLowerCase();
+
+          let totalVisibleCards = 0;
+
+          categories.forEach(cat => {
+            const cardsInCat = cat.querySelectorAll(".item .card");
+            let anyCardVisible = false;
+
+            cardsInCat.forEach(card => {
+              const cardText = card.textContent.toLowerCase();
+              const titleText = card.querySelector(".card-title.title")?.textContent.toLowerCase() || "";
+              
+              const matchesWord = selectedWord === "all" || titleText.includes(selectedWord.toLowerCase());
+              const matchesSearch = searchTerm === "" || cardText.includes(searchTerm);
+
+              if (matchesWord && matchesSearch) {
+                card.classList.remove("hidden-card");
+                anyCardVisible = true;
+                totalVisibleCards++;
+              } else {
+                card.classList.add("hidden-card");
+              }
+            });
+
+            if (!anyCardVisible) {
+              cat.classList.add("hidden-category");
+            } else {
+              cat.classList.remove("hidden-category");
+            }
+          });
+
+          if (totalVisibleCards === 0 && (selectedWord !== "all" || searchTerm !== "")) {
+            noResults.classList.add("show");
+          } else {
+            noResults.classList.remove("show");
+          }
+
+          if (totalVisibleCards > 0) {
+            filterStats.textContent = `🟢 ${totalVisibleCards} وجبة`;
+          } else if (searchTerm !== "" || selectedWord !== "all") {
+            filterStats.textContent = "🔴 لا توجد نتائج";
+          } else {
+            filterStats.textContent = "";
+          }
+        }
+
+        filterSelect.addEventListener("change", filterAll);
+        searchInput.addEventListener("input", filterAll);
+
+        resetBtn.addEventListener("click", function () {
+          filterSelect.value = "all";
+          searchInput.value = "";
+          filterAll();
+          document.querySelector(".filter-section").scrollIntoView({ behavior: "smooth", block: "center" });
+        });
+
+        filterAll();
       });
-    });
-  </script>
+    </script>
+  </body>
 </html>
